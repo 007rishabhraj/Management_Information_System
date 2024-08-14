@@ -45,7 +45,8 @@ const login = async (req, res) => {
 const createUser = async(req, res) => {
 
     const {email,password,name} = req.body;
-
+    //delete this line
+    console.log(name + '/n' + password + '/n' + name);
      if (!email || !password || !name) {
        res.status(400).json({
          status: "Error",
