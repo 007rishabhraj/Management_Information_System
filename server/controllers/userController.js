@@ -83,7 +83,4 @@ const getUser = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
-
-
-
-export default{createUser,getUser};
+export default{createUser,getUser,login};

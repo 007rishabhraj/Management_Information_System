@@ -6,3 +6,4 @@ export const userRouter = express.Router();
 
 userRouter.route("/").all(verifyUser).get(userController.getUser);
 userRouter.route("/signup").post(userController.createUser);
+userRouter.route("/login").post(userController.login);
