@@ -1,65 +1,97 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+/* eslint-disable react/no-unescaped-entities */
+import { useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { useAuth } from "../../store/Auth";
 
 function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [input, setInput] = useState({ email: "", password: "" });
+  const { setUser } = useAuth();
+  // eslint-disable-next-line no-unused-vars
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const fetchData = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
-        const response = await axios.get('http://127.0.0.1:8000/api/v1/users/signup');
-        console.log('Data:', response.data);
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/v1/users/login",
+        input
+      );
+      setUser(response.data.user);
+      if (location.state && location.state.from) {
+        navigate(location.state.from);
+      } else {
+        navigate("/");
+      }
     } catch (error) {
-        console.error('Error fetching data:', error);
+      console.log(error);
+      setError("Invalid Credentials");
     }
   };
 
-  return (
-    <div className='flex justify-center items-center m-auto w-[100vw] min-h-[100vh] '>
-    <div className="min-w-[30%] p-8 bg-white shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)] rounded-lg">
-      <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-      <form onSubmit={fetchData} >
-        <div className="mb-4">
-          <input
-            type="email"
-            placeholder="Email Address"
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#640f12]"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#640f12]"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+  const changeHandler = (event) => {
+    const { name, value } = event.target;
+    setInput((prevInput) => ({
+      ...prevInput,
+      [name]: value,
+    }));
+    setError(null);
+  };
 
-        <div className="text-sm mb-5">
-          <Link to="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-            Forgot your password?
+  return (
+    <div className="flex justify-center items-center m-auto w-[100vw] min-h-[100vh]">
+      <div className="min-w-[30%] p-8 bg-white shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)] rounded-lg">
+        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#640f12]"
+              value={input.email}
+              onChange={changeHandler}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#640f12]"
+              value={input.password}
+              onChange={changeHandler}
+              required
+            />
+          </div>
+
+          <div className="text-sm mb-5">
+            <Link
+              to="#"
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
+              Forgot your password?
+            </Link>
+          </div>
+
+          <button
+            type="submit"
+            onSubmit={handleSubmit}
+            className="w-full bg-[#640f12] text-white p-3 rounded-md hover:bg-[#4a0b0e] transition duration-200"
+          >
+            Login
+          </button>
+        </form>
+        <div className="mt-4 text-center">
+          <p>Don't have an account?</p>
+          <Link to="/signup" className="text-[#640f12] hover:underline">
+            Signup here
           </Link>
         </div>
-
-        <button
-          type="submit"
-          className="w-full bg-[#640f12] text-white p-3 rounded-md hover:bg-[#4a0b0e] transition duration-200"
-        >
-          Login
-        </button>
-      </form>
-      <div className="mt-4 text-center">
-        Don't have an account?{' '}
-        <a href="/signup" className="text-[#640f12] hover:underline">
-          Login here
-        </a>
       </div>
-    </div>
     </div>
   );
 }

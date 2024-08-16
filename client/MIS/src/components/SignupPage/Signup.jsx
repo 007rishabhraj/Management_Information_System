@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import axios from 'axios';
 
 
@@ -8,22 +8,7 @@ function SignupPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   
-  // const sendRequest = async () => {
-  //   const res = await axios
-  //     .post("http://localhost:8000/signup", {
-  //       name,
-  //       email,
-  //       password,
-  //     })
-  //     .catch((err) => console.log(err));
-  //   const data = await res.data;
-  //   return data;
-  // };
-  // const handleSignup = (e) => {
-  //   e.preventDefault();
-  //   // send http request
-  //   sendRequest().then(() => {console.log("success")});
-  // };
+
 
   const handleSignup = (e) => {
     e.preventDefault();

@@ -1,20 +1,43 @@
-// import './App.css'
-import LoginPage from './components/LoginPage/LoginPage'
-import { BrowserRouter as Router,Route,Routes } from 'react-router-dom'
-import Signup from './components/SignupPage/Signup'
-import Profile from './components/Profile/Profile'
+import "./index.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import SignupPage from "./components/SignupPage/Signup";
+import LoginPage from "./components/LoginPage/LoginPage";
+import Profile from "./components/Profile/Profile";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import axios from "axios";
+import AuthProvider from "./store/AuthProvider";
+import { Outlet } from "react-router-dom";
 
-function App() {
+axios.defaults.withCredentials = true;
+const RootLayout = () => (
+  <>
+    <Header />
+    <Outlet />
+    <Footer />
+  </>
+);
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout />,
+    children: [
+      { path: "profile", element: <Profile /> },
+      { path: "login", element: <LoginPage /> },
+      { path: "signup", element: <SignupPage /> },
+    ],
+  },
+]);
+
+const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path='/'element={<Profile/>}/>
-        <Route path='login'element={<LoginPage/>}/>
-        <Route path='signup'element={<Signup/>}/>
-      </Routes>
-    </Router>
-  )
-}
+    <AuthProvider>
+      <div className="min-h-screen flex flex-col m-0 p-0">
+        <RouterProvider router={router} />
+      </div>
+    </AuthProvider>
+  );
+};
 
-export default App
+export default App;
