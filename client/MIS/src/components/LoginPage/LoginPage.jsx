@@ -1,16 +1,18 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../store/Auth";
 
 function LoginPage() {
-  const [input, setInput] = useState({ email: "", password: "" });
+  const [input, setInput] = useState({
+    email: "",
+    password: "",
+    role: "faculty",
+  });
   const { setUser } = useAuth();
-  // eslint-disable-next-line no-unused-vars
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,8 +22,12 @@ function LoginPage() {
         input
       );
       setUser(response.data.user);
-      if (location.state && location.state.from) {
-        navigate(location.state.from);
+
+      // Redirect based on role
+      if (input.role === "faculty") {
+        navigate("/faculty/dashboard");
+      } else if (input.role === "admin") {
+        navigate("/admin/dashboard");
       } else {
         navigate("/");
       }
@@ -68,6 +74,19 @@ function LoginPage() {
             />
           </div>
 
+          <div className="mb-4">
+            <select
+              name="role"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#640f12]"
+              value={input.role}
+              onChange={changeHandler}
+              required
+            >
+              <option value="faculty">Faculty</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
           <div className="text-sm mb-5">
             <Link
               to="#"
@@ -79,7 +98,6 @@ function LoginPage() {
 
           <button
             type="submit"
-            onSubmit={handleSubmit}
             className="w-full bg-[#640f12] text-white p-3 rounded-md hover:bg-[#4a0b0e] transition duration-200"
           >
             Login

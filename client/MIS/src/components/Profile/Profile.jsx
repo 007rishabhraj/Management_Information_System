@@ -1,63 +1,150 @@
-import React from 'react';
+import  { useEffect, useState } from "react";
+import { useAuth } from "../../store/Auth";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const Profile = () => {
+function ProfilePage() {
+  const { user, setUser } = useAuth();
+  const [profile, setProfile] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      setProfile(user);
+    } else {
+      const fetchProfile = async () => {
+        try {
+          const response = await axios.get(
+            "http://127.0.0.1:8000/api/v1/users/profile"
+          );
+          setProfile(response.data);
+        } catch (error) {
+          console.error("Error fetching profile data", error);
+        }
+      };
+      fetchProfile();
+    }
+  }, [user]);
+
+  const handleLogout = () => {
+    setUser(null);
+    navigate("/login");
+  };
+
+  if (!profile) {
+    return <p>Loading profile...</p>;
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="flex items-center justify-between p-6 bg-[#4a0b0e] text-white">
-          <div className="flex items-center">
+    <div className="flex flex-row min-h-[100vh]">
+      {/* Sidebar */}
+      <div className="w-1/4 bg-gray-800 text-white p-6">
+        <h2 className="text-xl font-semibold mb-6">Faculty Options</h2>
+        <ul className="space-y-4">
+          <li>
+            <button
+              onClick={() => navigate("/profile/complain")}
+              className="text-left w-full hover:bg-gray-700 p-2 rounded"
+            >
+              Complain
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => navigate("/profile/feedback-request")}
+              className="text-left w-full hover:bg-gray-700 p-2 rounded"
+            >
+              Feedback 
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => navigate("/profile/feedback-request")}
+              className="text-left w-full hover:bg-gray-700 p-2 rounded"
+            >
+              Request
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => navigate("/profile/facility")}
+              className="text-left w-full hover:bg-gray-700 p-2 rounded"
+            >
+              Facility
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => navigate("/profile/document-information")}
+              className="text-left w-full hover:bg-gray-700 p-2 rounded"
+            >
+              Document
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => navigate("/profile/document-information")}
+              className="text-left w-full hover:bg-gray-700 p-2 rounded"
+            >
+              Information
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      {/* Profile Content */}
+      <div className="w-3/4 p-8 bg-gray-100">
+        <div className="bg-white p-8 shadow-lg rounded-lg">
+          <h2 className="text-3xl font-bold mb-8 text-center">Your Profile</h2>
+          <div className="flex justify-center mb-8">
             <img
-              src="https://via.placeholder.com/100"
+              src={profile.profilePicture || "https://via.placeholder.com/150"}
               alt="Profile"
-              className="w-24 h-24 rounded-full border-4 border-white"
+              className="w-32 h-32 rounded-full border-2 border-gray-300"
             />
-            <div className="ml-4">
-              <h1 className="text-2xl font-semibold">John Doe</h1>
-              <p>Member</p>
-            </div>
           </div>
-          <button className="bg-[#640f12] hover:bg-[#5a0d10] text-white py-2 px-4 rounded-lg">
-            Edit Profile
-          </button>
-        </div>
-
-        <div className="p-6">
-          <h2 className="text-xl font-semibold text-gray-800">Profile Information</h2>
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-gray-50 p-4 rounded-lg shadow">
-              <p className="text-gray-600"><strong>Email:</strong> john.doe@example.com</p>
-              <p className="text-gray-600 mt-2"><strong>Phone:</strong> +1234567890</p>
-              <p className="text-gray-600 mt-2"><strong>Address:</strong> 123 Main St, Anytown, USA</p>
-            </div>
-
-            <div className="bg-gray-50 p-4 rounded-lg shadow">
-              {/* <p className="text-gray-600"><strong>Member Since:</strong> January 15, 2020</p> */}
-              {/* <p className="text-gray-600 mt-2"><strong>Subscription:</strong> Premium</p> */}
-              {/* <p className="text-gray-600 mt-2"><strong>Last Login:</strong> August 22, 2024</p> */}
-            </div>
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold">Name:</h3>
+            <p className="text-lg p-3 border border-gray-300 rounded-md">
+              {profile.name}
+            </p>
           </div>
-
-          <div className="mt-8">
-            <h2 className="text-xl font-semibold text-gray-800">User Actions</h2>
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <button className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
-                View Activity
-              </button>
-              <button className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg">
-                Manage Subscription
-              </button>
-              <button className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg">
-                Account Settings
-              </button>
-              <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg">
-                Logout
-              </button>
-            </div>
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold">Email:</h3>
+            <p className="text-lg p-3 border border-gray-300 rounded-md">
+              {profile.email}
+            </p>
+          </div>
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold">Role:</h3>
+            <p className="text-lg p-3 border border-gray-300 rounded-md">
+              {profile.role}
+            </p>
+          </div>
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold">Bio:</h3>
+            <p className="text-lg p-3 border border-gray-300 rounded-md">
+              {profile.bio || "You have not set a bio yet."}
+            </p>
+          </div>
+          <div className="flex justify-between">
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition duration-200"
+            >
+              Logout
+            </button>
+            <button
+              onClick={() => navigate("/edit-profile")}
+              className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
+            >
+              Edit Profile
+            </button>
           </div>
         </div>
       </div>
     </div>
   );
-};
+}
 
-export default Profile;
+export default ProfilePage;
