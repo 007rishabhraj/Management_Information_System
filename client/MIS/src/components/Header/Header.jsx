@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import  { useState } from 'react';
+import Logo from "../../assets/logo_NIT.png";
 const Profile = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
@@ -12,7 +12,7 @@ const Profile = () => {
       <div className="container mx-auto flex justify-between items-center">
         {/* Left side of the navbar */}
         <div className="text-xl font-semibold text-white">
-          MyApp
+          <img src={Logo} alt="Logo" className="w-16 h-16 rounded-full"/>
         </div>
 
         {/* Right side of the navbar */}

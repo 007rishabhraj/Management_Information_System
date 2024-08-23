@@ -43,7 +43,7 @@ function ProfilePage() {
         <ul className="space-y-4">
           <li>
             <button
-              onClick={() => navigate("/profile/complain")}
+              onClick={() => navigate("/complain")}
               className="text-left w-full hover:bg-gray-700 p-2 rounded"
             >
               Complain
