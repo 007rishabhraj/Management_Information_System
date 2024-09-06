@@ -51,7 +51,7 @@ function ProfilePage() {
           </li>
           <li>
             <button
-              onClick={() => navigate("/profile/feedback-request")}
+              onClick={() => navigate("/Feedback")}
               className="text-left w-full hover:bg-gray-700 p-2 rounded"
             >
               Feedback 
