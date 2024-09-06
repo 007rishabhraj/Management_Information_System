@@ -4,12 +4,14 @@ import SignupPage from "./components/SignupPage/Signup";
 import LoginPage from "./components/LoginPage/LoginPage";
 import Profile from "./components/Profile/Profile";
 import Header from "./components/Header/Header";
+import Feedback from "./components/FeedbackForm/FeedbackForm";
 import Footer from "./components/Footer/Footer";
 import Home from "./components/Home/Home";
 import ComplainForm from "./components/ComplainForm/ComplainForm";
 import axios from "axios";
 import AuthProvider from "./store/AuthProvider";
 import { Outlet } from "react-router-dom";
+import AdminPanel from "./components/AdminPanel";
 
 axios.defaults.withCredentials = true;
 const RootLayout = () => (
@@ -29,7 +31,9 @@ const router = createBrowserRouter([
       { path: "profile", element: <Profile /> },
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignupPage /> },
-      {path:"complain",element:<ComplainForm/>}
+      {path:"complain",element:<ComplainForm/>},
+      {path:"Feedback",element:<Feedback/>},
+      {path:"admin",element:<AdminPanel/>}
     ],
   },
 ]);
