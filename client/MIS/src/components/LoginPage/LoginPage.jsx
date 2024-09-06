@@ -11,7 +11,7 @@ function LoginPage() {
     role: "faculty",
   });
   const { setUser } = useAuth();
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
