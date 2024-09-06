@@ -51,7 +51,7 @@ function ProfilePage() {
           </li>
           <li>
             <button
-              onClick={() => navigate("/profile/feedback-request")}
+              onClick={() => navigate("/Feedback")}
               className="text-left w-full hover:bg-gray-700 p-2 rounded"
             >
               Feedback 
@@ -65,14 +65,7 @@ function ProfilePage() {
               Request
             </button>
           </li>
-          <li>
-            <button
-              onClick={() => navigate("/profile/facility")}
-              className="text-left w-full hover:bg-gray-700 p-2 rounded"
-            >
-              Facility
-            </button>
-          </li>
+          
           <li>
             <button
               onClick={() => navigate("/profile/document-information")}
@@ -122,9 +115,9 @@ function ProfilePage() {
             </p>
           </div>
           <div className="mb-6">
-            <h3 className="text-xl font-semibold">Bio:</h3>
+            <h3 className="text-xl font-semibold">Biodata:</h3>
             <p className="text-lg p-3 border border-gray-300 rounded-md">
-              {profile.bio || "You have not set a bio yet."}
+              {profile.bio || "You have not set your bio yet."}
             </p>
           </div>
           <div className="flex justify-between">

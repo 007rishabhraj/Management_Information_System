@@ -70,6 +70,27 @@ function ComplainForm() {
               <option value="Campus">Campus</option>
               <option value="Lecture Hall">Lecture Hall</option>
             </select>
+            <label
+              htmlFor="location"
+              className="block text-lg font-medium mb-2"
+            >
+              Regarding:
+            </label>
+            <select
+              id="location"
+              name="location"
+              value={complain.location}
+              onChange={handleChange}
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="" disabled>
+                Categories
+              </option>
+              <option value="Home">Plumping</option>
+              <option value="Department">Electrical</option>
+              <option value="Hostel">Civil</option>
+            </select>
           </div>
           <div className="mb-4">
             <label
