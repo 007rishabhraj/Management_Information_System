@@ -1,4 +1,12 @@
+import { useNavigate } from 'react-router-dom';
+
 const Home = () => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/login'); 
+  };
+
+
   return (
     <div className="min-h-screen bg-white p-6 flex flex-col items-center">
       <div className="text-center text-brown-700 font-bold text-2xl mb-4">
@@ -9,7 +17,7 @@ const Home = () => {
         platform.
       </div>
       <div className="flex flex-col sm:flex-row gap-6">
-        <div className="bg-brown-100 p-6 rounded-lg shadow-lg flex-1 max-w-sm">
+        <div className="bg-brown-100 p-6 rounded-lg shadow-lg flex-1 max-w-sm" onClick={handleClick} style={{ cursor: 'pointer' }}>
           <div className="text-center mb-4">
             <svg
               className="w-12 h-12 mx-auto text-brown-700"

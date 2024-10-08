@@ -6,9 +6,10 @@ import { useAuth } from "../../store/Auth";
 
 function LoginPage() {
   const [input, setInput] = useState({
+    name:"",
     email: "",
     password: "",
-    role: "faculty",
+    role: "faculty"
   });
   const { setUser } = useAuth();
   const [error, setError] = useState(null);
@@ -25,9 +26,9 @@ function LoginPage() {
 
       // Redirect based on role
       if (input.role === "faculty") {
-        navigate("/faculty/dashboard");
+        navigate("/profile");
       } else if (input.role === "admin") {
-        navigate("/admin/dashboard");
+        navigate("/admin");
       } else {
         navigate("/");
       }

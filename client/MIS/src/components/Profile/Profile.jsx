@@ -76,10 +76,10 @@ function ProfilePage() {
           </li>
           <li>
             <button
-              onClick={() => navigate("/profile/document-information")}
+              onClick={() => navigate("/profile/document-History")}
               className="text-left w-full hover:bg-gray-700 p-2 rounded"
             >
-              Information
+              History
             </button>
           </li>
         </ul>
@@ -111,7 +111,7 @@ function ProfilePage() {
           <div className="mb-6">
             <h3 className="text-xl font-semibold">Role:</h3>
             <p className="text-lg p-3 border border-gray-300 rounded-md">
-              {profile.role}
+              Faculty
             </p>
           </div>
           <div className="mb-6">
