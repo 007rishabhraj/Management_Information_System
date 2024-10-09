@@ -110,34 +110,7 @@ function ComplainForm() {
               required
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="date" className="block text-lg font-medium mb-2">
-              Date:
-            </label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={complain.date}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="time" className="block text-lg font-medium mb-2">
-              Time:
-            </label>
-            <input
-              type="time"
-              id="time"
-              name="time"
-              value={complain.time}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+          
           <button
             type="submit"
             className="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-200"
