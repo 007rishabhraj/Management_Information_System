@@ -1,87 +1,122 @@
 import User from "../models/userModel.js";
-import bcrypt from 'bcrypt';
-import JWT from 'jsonwebtoken';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import sendToken from "../utils/sendToken.js";
 
-const login = async (req, res) => {
-  console.log(req.body);
-  const { email, password } = req.body;
+
+ const login = async (req, res) => {
+  const { email, password ,role} = req.body;
+
   try {
-    // Find user by email
     const user = await User.findOne({ email });
-    console.log("hm hi hai user");
-    console.log(user);
-    // Check if user exists
     if (!user) {
-      return res.status(404).json({
-        message: "User does not exist! Please register",
-      });
+      return res.status(400).json({ message: "Invalid username or password" });
     }
 
-    // Validate password
-    console.log("ye kya ho gya hai");
-    console.log(typeof password);
-    console.log(typeof user.password);
-    const isValid = await bcrypt.compareSync(password, user.password);
-    if (!isValid) {
+    if(role!=user.role){
+      return res.status(400).json({message:"Users role is not valid"})
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid username or password" });
+    }
+
+    // Create token and send it using sendToken function
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    sendToken(user, 200, token, res); // Call your sendToken function
+  } catch (error) {
+    res.status(500).json({ message: "Error logging in", error });
+  }
+};
+
+
+ const createUser = async (req, res) => {
+  const { username, password, role, RoomNo,confirmPassword,email } = req.body;
+
+  try {
+    let user = await User.findOne({ email });
+    if (user) {
       return res.status(400).json({
         status: "Error",
-        message: "Password does not match",
+        message: "User already exists! Please login",
+      });
+    }
+    if (password != confirmPassword) {
+      return res.status(400).json({
+        status: "Error",
+        message: "Password must be same",
       });
     }
 
-    // Generate JWT token
-    const token = JWT.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: "30d",
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+      role,
+      RoomNo,
     });
-    sendToken(user, 200, token, res);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Server Error"); // Handle server error
+    await newUser.save();
+    res
+      .status(201)
+      .json({
+        message: "User created successfully",
+        user: newUser,
+      });
+  } catch (error) {
+    console.error("Error in user registration:", error); // Log the error details for debugging
+    res.status(500).json({
+      message: "Error creating user",
+      error: error.message || "An unknown error occurred",
+    });
   }
 };
 
 
-const createUser = async(req, res) => {
+// const getUser = async (req, res) => {
+//   try {
+//     const user = req.body.user;
+//     res.json(user);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send("Server Error");
+//   }
+// };
 
-    const {email,password,name} = req.body;
-    //delete this line
-    console.log(name + '/n' + password + '/n' + name);
-     if (!email || !password || !name) {
-       res.status(400).json({
-         status: "Error",
-         message: "Email or Password not provided",
-       });
-     }
-
-     try{
-        let user = await User.findOne({email});
-        if(user){
-             return res.status(400).json({
-                status: "Error",
-                message: "User already exists! Please login",
-            });
-        }
-        var salt = bcrypt.genSaltSync(10);
-        var hashPassword = bcrypt.hashSync(password,salt);
-        user = await User.create({ email, password: hashPassword, name });
-        // Generate JWT token
-        const token = JWT.sign({ id: user.id }, process.env.JWT_SECRET, {
-            expiresIn: "30d",
-        });
-        sendToken(user, 200, token, res);
-     }catch(err){
-        console.log(err);
-        res.status(500).send("Server Error");
-     } 
-};
-const getUser = async (req, res) => {
+export const getUser = async (req, res) => {
   try {
-    const user = req.body.user;
+    const user = await User.findById(req.user._id).select("-password"); // Exclude password
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
     res.json(user);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user details", error });
   }
 };
-export default{createUser,getUser,login};
+
+ const updateUserProfile = async (req, res) => {
+  const { username, email, homeRoomNo } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { username, email, homeRoomNo },
+      { new: true, runValidators: true } // Return the updated document and validate
+    ).select("-password");
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: "Profile updated successfully", user: updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating profile", error });
+  }
+};
+export default { createUser, getUser, login,updateUserProfile };
