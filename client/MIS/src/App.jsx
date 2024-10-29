@@ -11,7 +11,8 @@ import ComplainForm from "./components/ComplainForm/ComplainForm";
 import axios from "axios";
 import AuthProvider from "./store/AuthProvider";
 import { Outlet } from "react-router-dom";
-import AdminPanel from "./components/AdminPanel";
+import AdminDashboard from "./components/AdminDashboard/Admindashboard";
+import AdminLogin from "./components/Adminlogin/Adminlogin";
 
 axios.defaults.withCredentials = true;
 const RootLayout = () => (
@@ -27,13 +28,14 @@ const router = createBrowserRouter([
     path: "/",
     element: <RootLayout />,
     children: [
-      {path:"/",element:<Home/>},
+      { path: "/", element: <Home /> },
       { path: "profile", element: <Profile /> },
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignupPage /> },
-      {path:"complain",element:<ComplainForm/>},
-      {path:"Feedback",element:<Feedback/>},
-      {path:"admin",element:<AdminPanel/>}
+      { path: "complain", element: <ComplainForm /> },
+      { path: "Feedback", element: <Feedback /> },
+      { path: "admin", element: <AdminDashboard /> },
+      { path: "adminlogin", element: < AdminLogin/> },
     ],
   },
 ]);
