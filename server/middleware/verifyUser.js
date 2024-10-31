@@ -4,9 +4,9 @@ import User from "../models/userModel.js";
 const verifyUser = async (req, res, next) => {
   try {
     // Extract the token from cookies
-    console.log("cookies:",req.cookies)
+    // console.log("cookies:",req.cookies)
     const token = req.cookies.token;
-    console.log(token);
+    // console.log(token);
     if (!token) {
       return res.status(400).json({
         status: "Error",
@@ -28,7 +28,7 @@ const verifyUser = async (req, res, next) => {
     }
 
     req.user = user;
-    console.log(user);
+    // console.log(user);
 
     next();
   } catch (err) {

@@ -15,8 +15,11 @@ userRouter
   .post(userController.updateUserProfile);
 userRouter.route("/login").post(userController.login);
 
-
 // complain endpoints
+userRouter.route("/allcomplains").get(verifyUser,complainController.getUserComplaints)
+userRouter
+  .route("/complaints/:complaintId").all(verifyUser)
+  .patch(complainController.updateComplaintStatus);
 userRouter
   .route("/complain")
   .all(verifyUser)
