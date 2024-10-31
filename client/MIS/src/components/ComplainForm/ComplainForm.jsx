@@ -1,126 +1,199 @@
-import  { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../store/Auth"; // Import the useAuth hook
 
-function ComplainForm() {
-  const [complain, setComplain] = useState({
-    location: "",
+const ComplaintForm = () => {
+  const [formData, setFormData] = useState({
+    department: "",
     description: "",
-    date: new Date().toISOString().slice(0, 10),
-    time: new Date().toLocaleTimeString(),
-    resolved: false,
+    availabilityStart: "",
+    availabilityEnd: "",
+    location: "",
   });
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
+  const { user } = useAuth(); // Get user info from context
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    // Form validation
+    const {
+      department,
+      description,
+      availabilityStart,
+      availabilityEnd,
+      location,
+    } = formData;
+    if (
+      !department ||
+      !description ||
+      !availabilityStart ||
+      !availabilityEnd ||
+      !location
+    ) {
+      setError("All fields are required.");
+      return;
+    }
+
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/complains",
-        complain
+        "http://localhost:8000/api/v1/users/complain",
+        {
+          department,
+          description,
+          availability: {
+            start: new Date(availabilityStart), // Convert to Date object
+            end: new Date(availabilityEnd), // Convert to Date object
+          },
+          location,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`, // Use token from the user context
+            "Content-Type": "application/json",
+          },
+        }
       );
-      console.log("Complain submitted:", response.data);
-      // Reset form after submission
-      setComplain({
-        location: "",
-        description: "",
-        date: new Date().toISOString().slice(0, 10),
-        time: new Date().toLocaleTimeString(),
-        resolved: false,
-      });
+
+      setSuccess(response.data.message);
+      // Redirect to the profile page after successful submission
+      navigate("/profile");
     } catch (error) {
-      console.error("Error submitting complain", error);
+      setError(
+        error.response?.data?.message ||
+          "Error submitting complaint. Please try again."
+      );
     }
   };
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setComplain((prevComplain) => ({
-      ...prevComplain,
-      [name]: value,
-    }));
-  };
-
   return (
-    <div className="flex justify-center items-center m-auto w-[100vw] min-h-[100vh] p-4 bg-gray-100">
-      <div className="min-w-[50%] p-8 bg-white shadow-lg rounded-lg">
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          Submit a Complain
-        </h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              htmlFor="location"
-              className="block text-lg font-medium mb-2"
-            >
-              Location:
-            </label>
-            <select
-              id="location"
-              name="location"
-              value={complain.location}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            >
-              <option value="" disabled>
-                Select Location
-              </option>
-              <option value="Home">Home</option>
-              <option value="Department">Department</option>
-              <option value="Hostel">Hostel</option>
-              <option value="Campus">Campus</option>
-              <option value="Lecture Hall">Lecture Hall</option>
-            </select>
-            <label
-              htmlFor="location"
-              className="block text-lg font-medium mb-2"
-            >
-              Regarding:
-            </label>
-            <select
-              id="location"
-              name="location"
-              value={complain.location}
-              onChange={handleChange}
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            >
-              <option value="" disabled>
-                Categories
-              </option>
-              <option value="Home">Plumping</option>
-              <option value="Department">Electrical</option>
-              <option value="Hostel">Civil</option>
-            </select>
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="description"
-              className="block text-lg font-medium mb-2"
-            >
-              Description:
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              value={complain.description}
-              onChange={handleChange}
-              rows="4"
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Write your complain here..."
-              required
-            />
-          </div>
-          
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white p-3 rounded-md hover:bg-blue-700 transition duration-200"
+    <div className="flex flex-col items-center min-h-screen bg-gray-100 p-6">
+      <h2 className="text-2xl font-bold text-brown-700 mb-4">
+        Submit a Complaint
+      </h2>
+      {error && (
+        <div className="bg-red-500 text-white p-2 rounded mb-4">{error}</div>
+      )}
+      {success && (
+        <div className="bg-green-500 text-white p-2 rounded mb-4">
+          {success}
+        </div>
+      )}
+
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded shadow-lg w-full max-w-md"
+      >
+        <div className="mb-4">
+          <label className="block text-brown-700 mb-1" htmlFor="department">
+            Department
+          </label>
+          <select
+            id="department"
+            name="department"
+            value={formData.department}
+            onChange={handleChange}
+            className="border rounded p-2 w-full"
+            required
           >
-            Submit Complain
-          </button>
-        </form>
-      </div>
+            <option value="">Select Department</option>
+            <option value="electric">Electric</option>
+            <option value="plumbing">Plumbing</option>
+            <option value="carpentry">Carpentry</option>
+            <option value="networking">Networking</option>
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-brown-700 mb-1" htmlFor="description">
+            Description
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            className="border rounded p-2 w-full"
+            rows="4"
+            required
+          ></textarea>
+        </div>
+
+        <div className="mb-4">
+          <label
+            className="block text-brown-700 mb-1"
+            htmlFor="availabilityStart"
+          >
+            Availability Start
+          </label>
+          <input
+            type="datetime-local"
+            id="availabilityStart"
+            name="availabilityStart"
+            value={formData.availabilityStart}
+            onChange={handleChange}
+            className="border rounded p-2 w-full"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label
+            className="block text-brown-700 mb-1"
+            htmlFor="availabilityEnd"
+          >
+            Availability End
+          </label>
+          <input
+            type="datetime-local"
+            id="availabilityEnd"
+            name="availabilityEnd"
+            value={formData.availabilityEnd}
+            onChange={handleChange}
+            className="border rounded p-2 w-full"
+            required
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-brown-700 mb-1" htmlFor="location">
+            Location
+          </label>
+          <select
+            id="location"
+            name="location"
+            value={formData.location}
+            onChange={handleChange}
+            className="border rounded p-2 w-full"
+            required
+          >
+            <option value="">Select Location</option>
+            <option value="lecture hall">Lecture Hall</option>
+            <option value="home">Home</option>
+            <option value="department">Department</option>
+            <option value="hostel">Hostel</option>
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-[#640F12] text-white py-2 rounded hover:bg-[#8b1a1f] transition-colors"
+        >
+          Submit Complaint
+        </button>
+      </form>
     </div>
   );
-}
+};
 
-export default ComplainForm;
+export default ComplaintForm;
