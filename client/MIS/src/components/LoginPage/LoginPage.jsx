@@ -12,7 +12,7 @@ const LoginForm = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { setUser } = useAuth(); // Use the context to set user
+  // const { setUser } = useAuth(); // Use the context to set user
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,19 +22,27 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(""); // Clear any previous error
-
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/users/login",
         formData,
         { withCredentials: true }
       );
-
-      // Assuming response.data contains user information
-      const userData = response.data.user; // Adjust this based on your API response
-      setUser(userData); // Update context with user data
+      if(formData.role==="normal_user")
+      {
+        // Assuming response.data contains user information
+        const userData = response.data.user; // Adjust this based on your API response
+        localStorage.setItem("user" , JSON.stringify(userData))
+        // setUser(userData); // Update context with user data
+        navigate("/profile"); // Navigate to the profile page
+      }
+      else 
+      {
+        localStorage.setItem("admin" , JSON.stringify({jd:formData.role}))
+        navigate("/admin");
+      }
       toast.success("Login successful!"); // Show success toast
-      navigate("/profile"); // Navigate to the profile page
+
     } catch (err) {
       console.error("Login error:", err);
       setError(err.response?.data?.message || "Login failed");
