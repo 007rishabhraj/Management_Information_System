@@ -1,49 +1,72 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
-const AdminDashboard = ({ admin }) => {
+const AdminDashboard = () => {
+  // Retrieve and parse the admin data from localStorage
+  let admin = localStorage.getItem("admin");
+  admin = admin ? JSON.parse(admin) : null;
+  
+
   const [complaints, setComplaints] = useState([]);
 
   useEffect(() => {
     if (admin && admin.jd) {
-      // Ensure admin and admin.jd exist before making the API call
       const fetchComplaints = async () => {
         try {
-          // Fetch complaints filtered by admin's JD
+          // API call to fetch complaints
+          
+
           const response = await axios.get(
-            `/api/admin/complaints?jd=${admin.jd}`
+            `/api/v1/users/department/${admin.jd}`
           );
-          setComplaints(response.data);
+          const complaintsData = Array.isArray(response.data) ? response.data : [];
+          setComplaints(complaintsData);
         } catch (err) {
-          console.error("Error fetching complaints", err);
+          console.error("Error fetching complaints:", err);
+          setComplaints([]);
         }
       };
 
       fetchComplaints();
     }
-  }, [admin]); // Dependency on admin data
+  }, []); // Run on component mount
 
   if (!admin) {
-    return <p>Loading...</p>; // Render a loading state if admin is not available
+    return <p className="text-center text-gray-500">Loading...</p>;
   }
 
   return (
-    <div>
-      <h2>{admin.jd} Complaints Dashboard</h2>
-      {complaints.length > 0 ? (
-        <ul>
-          {complaints.map((complaint) => (
-            <li key={complaint._id}>
-              <h4>{complaint.regarding}</h4>
-              <p>{complaint.description}</p>
-              <p>Status: {complaint.status}</p>
-              <p>Location: {complaint.location}</p>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No complaints found for {admin.jd}</p>
-      )}
+    <div className="p-6 bg-gray-100 min-h-screen">
+      <header className="bg-white p-4 shadow-md rounded-md mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">
+          {admin.jd.slice(0, -3).toUpperCase()} Complaints Dashboard
+        </h2>
+      </header>
+      <main className="bg-white p-4 shadow-md rounded-md">
+        {complaints.length > 0 ? (
+          <ul className="space-y-4">
+            {complaints.map((complaint) => (
+              <li
+                key={complaint._id}
+                className="p-4 border border-gray-200 rounded-md"
+              >
+                <h4 className="text-lg font-semibold text-gray-700">
+                  {complaint.regarding}
+                </h4>
+                <p className="text-gray-600">{complaint.description}</p>
+                <p className="text-sm text-gray-500">
+                  Status: {complaint.status}
+                </p>
+                <p className="text-sm text-gray-500">
+                  Location: {complaint.location}
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-gray-500">No complaints found for {admin.department}</p>
+        )}
+      </main>
     </div>
   );
 };

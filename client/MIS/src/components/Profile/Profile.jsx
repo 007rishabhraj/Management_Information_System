@@ -4,7 +4,10 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function ProfilePage() {
-  const { user, setUser } = useAuth();
+  // const { user, setUser } = useAuth();
+  const rawData = localStorage.getItem("user")
+  let user = null;
+  if(rawData) user = JSON.parse(rawData);
   const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
 
@@ -27,24 +30,26 @@ function ProfilePage() {
 
           // Set the fetched profile and update user context
           setProfile(response.data);
-          setUser(response.data.user);
+          localStorage.setItem("user" , JSON.stringify(response.data.user))
+          // setUser(response.data.user);
         }
       } catch (error) {
         console.error("Error fetching profile data", error);
         // Optional: Navigate to login if there's an authentication error
         if (error.response && error.response.status === 401) {
           // Unauthorized access, navigate to login
-          setUser(null); // Clear user from context
+          // setUser(null); // Clear user from context
           navigate("/login");
         }
       }
     };
 
     fetchProfile();
-  }, [user, setUser, navigate]); // Ensure dependencies are correct
+  }, []); // Ensure dependencies are correct
 
   const handleLogout = () => {
-    setUser(null);
+    // setUser(null);
+    localStorage.setItem("user" , "")
     navigate("/login");
   };
 
