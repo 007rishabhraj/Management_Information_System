@@ -59,7 +59,7 @@ const ComplaintForm = () => {
         },
         {
           headers: {
-            Authorization: `Bearer ${user?.token}`, // Use token from the user context
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Use token from the user context
             "Content-Type": "application/json",
           },
         }

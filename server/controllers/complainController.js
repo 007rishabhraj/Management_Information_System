@@ -38,8 +38,7 @@ const getDepartmentComplaints = async (req, res) => {
 const updateComplaintStatus = async (req, res) => {
   try {
     const { complaintId } = req.params;
-    const { status } = req.body;
-
+    const { status } = req.body; 
     const validStatuses = ["pending", "in-progress", "completed","closed"];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ message: "Invalid status" });
