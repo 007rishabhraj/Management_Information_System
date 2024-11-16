@@ -5,7 +5,11 @@ const verifyUser = async (req, res, next) => {
   try {
     // Extract the token from cookies
     // console.log("cookies:",req.cookies)
-    const token = req.cookies.token;
+    // const token = req.cookies.token;
+    
+
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; 
     // console.log(token);
     if (!token) {
       return res.status(400).json({

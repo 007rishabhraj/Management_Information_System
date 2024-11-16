@@ -28,6 +28,7 @@ const LoginForm = () => {
         formData,
         { withCredentials: true }
       );
+      localStorage.setItem("token" , response.data.token)
       if(formData.role==="normal_user")
       {
         // Assuming response.data contains user information
