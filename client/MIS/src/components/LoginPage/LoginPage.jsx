@@ -12,7 +12,6 @@ const LoginForm = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  // const { setUser } = useAuth(); // Use the context to set user
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,28 +21,25 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(""); // Clear any previous error
+
     try {
+      // Handle Login
       const response = await axios.post(
         "http://localhost:8000/api/v1/users/login",
         formData,
         { withCredentials: true }
       );
-      localStorage.setItem("token" , response.data.token)
-      if(formData.role==="normal_user")
-      {
+      localStorage.setItem("token", response.data.token);
+      if (formData.role === "normal_user") {
         // Assuming response.data contains user information
         const userData = response.data.user; // Adjust this based on your API response
-        localStorage.setItem("user" , JSON.stringify(userData))
-        // setUser(userData); // Update context with user data
+        localStorage.setItem("user", JSON.stringify(userData));
         navigate("/profile"); // Navigate to the profile page
-      }
-      else 
-      {
-        localStorage.setItem("admin" , JSON.stringify({jd:formData.role}))
+      } else {
+        localStorage.setItem("admin", JSON.stringify({ jd: formData.role }));
         navigate("/admin");
       }
       toast.success("Login successful!"); // Show success toast
-
     } catch (err) {
       console.error("Login error:", err);
       setError(err.response?.data?.message || "Login failed");
@@ -108,6 +104,16 @@ const LoginForm = () => {
         >
           Log In
         </button>
+
+        <p className="mt-4 text-center text-gray-700">
+          Don't have an account?{" "}
+          <span
+            onClick={() => navigate("/signup")} // Navigate to the signup route
+            className="text-[#640F12] cursor-pointer"
+          >
+            Sign Up
+          </span>
+        </p>
       </form>
     </div>
   );
