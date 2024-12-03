@@ -2,6 +2,9 @@ import express from "express";
 import userController from "../controllers/userController.js";
 import verifyUser from "../middleware/verifyUser.js";
 import complainController from "../controllers/complainController.js";
+import feedbackController from "../controllers/feedbackController.js";
+import jdController from "../controllers/jdController.js";
+// import 
 import { verifyJd } from "../middleware/verifyJd.js";
 
 export const userRouter = express.Router();
@@ -32,6 +35,8 @@ userRouter
     complainController.getDepartmentComplaints
   );
 
+
+
 userRouter
   .route("/department/plumbing")
   .get(
@@ -55,3 +60,23 @@ userRouter
     verifyJd("carpentry"),
     complainController.getDepartmentComplaints
   );
+
+
+
+//////////feedback from jd
+userRouter
+  .route("/feedback")
+  .post(feedbackController.createFeedback);
+userRouter
+  .route("/feedback")
+  .get(feedbackController.getFeedback);
+userRouter
+  .route("/feedback/:feedbackId")
+  .patch(feedbackController.updateFeedback);
+userRouter
+  .route("/feedback/:feedbackId")
+  .delete(feedbackController.deleteFeedback)
+
+userRouter
+.route("/jds")
+.get(jdController.getAllJds);
