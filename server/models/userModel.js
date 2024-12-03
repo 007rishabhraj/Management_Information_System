@@ -22,6 +22,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     // required: [true, "Please provide a password"],
     minlength: [8, "Your password must contain 8 characters"],
+  },
+  biodata:{
+    type:String
+  },
+  role:{
+    type:String,
+    default:"Faculty"
   }
 });
 

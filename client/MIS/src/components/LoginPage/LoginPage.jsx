@@ -21,6 +21,7 @@ function LoginPage() {
         "http://127.0.0.1:8000/api/v1/users/login",
         input
       );
+      console.log("HELLO")
       setUser(response.data.user);
 
       // Redirect based on role
