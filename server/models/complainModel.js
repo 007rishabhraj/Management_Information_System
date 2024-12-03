@@ -1,30 +1,46 @@
 import mongoose from "mongoose";
 
-const complainSchema = new mongoose.Schema({
-  location: {
-    type: String,
+const complaintSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    department: {
+      type: String,
+      required: true,
+      enum: ["electric", "plumbing", "carpentry", "networking"], // Add more departments as needed
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    availability: {
+      start: {
+        type: Date,
+        required: true,
+      },
+      end: {
+        type: Date,
+        required: true,
+      },
+    },
+    location: {
+      type: String,
+      required: true,
+      enum: ["lecture hall", "home","department", "hostel"], // Add more locations as needed
+    },
+    status: {
+      type: String,
+      default: "pending",
+      enum: ["pending", "in-progress", "completed", "closed"], // Complaint status
+    },
   },
-  regarding: {
-    type: String,
-  },
-  description: {
-    type: String,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  complainer: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    // default:" "
-  },
-});
+  { timestamps: true }
+);
 
-const complainModel=new mongoose.model("complain",complainSchema);
-
-export default complainModel;
-
+export default  mongoose.model("Complaint", complaintSchema);
 
 
 

@@ -1,33 +1,55 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../store/Auth";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function ProfilePage() {
-  const { user, setUser } = useAuth();
+  // const { user, setUser } = useAuth();
+  const rawData = localStorage.getItem("user")
+  let user = null;
+  if(rawData) user = JSON.parse(rawData);
   const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
-      setProfile(user);
-    } else {
-      const fetchProfile = async () => {
-        try {
+    const fetchProfile = async () => {
+      try {
+        // If user is present in context, set profile to user directly
+        if (user) {
+          setProfile(user);
+        } else {
+          // Attempt to fetch user data from the server
           const response = await axios.get(
-            "http://127.0.0.1:8000/api/v1/users/profile"
+            "http://127.0.0.1:8000/api/v1/users/",
+            {
+              headers: {
+                Authorization: `Bearer ${user?.token}`, // Include token if available
+              },
+            }
           );
+
+          // Set the fetched profile and update user context
           setProfile(response.data);
-        } catch (error) {
-          console.error("Error fetching profile data", error);
+          localStorage.setItem("user" , JSON.stringify(response.data.user))
+          // setUser(response.data.user);
         }
-      };
-      fetchProfile();
-    }
-  }, [user]);
+      } catch (error) {
+        console.error("Error fetching profile data", error);
+        // Optional: Navigate to login if there's an authentication error
+        if (error.response && error.response.status === 401) {
+          // Unauthorized access, navigate to login
+          // setUser(null); // Clear user from context
+          navigate("/login");
+        }
+      }
+    };
+
+    fetchProfile();
+  }, []); // Ensure dependencies are correct
 
   const handleLogout = () => {
-    setUser(null);
+    // setUser(null);
+    localStorage.setItem("user" , "")
     navigate("/login");
   };
 
@@ -51,10 +73,10 @@ function ProfilePage() {
           </li>
           <li>
             <button
-              onClick={() => navigate("/Feedback")}
+              onClick={() => navigate("/feedback")}
               className="text-left w-full hover:bg-gray-700 p-2 rounded"
             >
-              Feedback 
+              Feedback
             </button>
           </li>
           <li>
@@ -62,10 +84,9 @@ function ProfilePage() {
               onClick={() => navigate("/profile/feedback-request")}
               className="text-left w-full hover:bg-gray-700 p-2 rounded"
             >
-              Request
+              My Complaints
             </button>
           </li>
-          
           <li>
             <button
               onClick={() => navigate("/profile/document-information")}
@@ -76,10 +97,10 @@ function ProfilePage() {
           </li>
           <li>
             <button
-              onClick={() => navigate("/profile/document-information")}
+              onClick={() => navigate("/profile/document-history")}
               className="text-left w-full hover:bg-gray-700 p-2 rounded"
             >
-              Information
+              History
             </button>
           </li>
         </ul>
@@ -99,7 +120,7 @@ function ProfilePage() {
           <div className="mb-6">
             <h3 className="text-xl font-semibold">Name:</h3>
             <p className="text-lg p-3 border border-gray-300 rounded-md">
-              {profile.name}
+              {profile.username}
             </p>
           </div>
           <div className="mb-6">
@@ -112,12 +133,6 @@ function ProfilePage() {
             <h3 className="text-xl font-semibold">Role:</h3>
             <p className="text-lg p-3 border border-gray-300 rounded-md">
               {profile.role}
-            </p>
-          </div>
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold">Biodata:</h3>
-            <p className="text-lg p-3 border border-gray-300 rounded-md">
-              {profile.bio || "You have not set your bio yet."}
             </p>
           </div>
           <div className="flex justify-between">

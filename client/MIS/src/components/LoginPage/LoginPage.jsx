@@ -1,118 +1,122 @@
-/* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../../store/Auth";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify"; // Import toast for notifications
+import { useAuth } from "../../store/Auth"; // Import your auth context
 
-function LoginPage() {
-  const [input, setInput] = useState({
+const LoginForm = () => {
+  const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "faculty",
+    role: "normal_user", // Default role
   });
-  const { setUser } = useAuth();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/v1/users/login",
-        input
-      );
-      console.log("HELLO")
-      setUser(response.data.user);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-      // Redirect based on role
-      if (input.role === "faculty") {
-        navigate("/faculty/dashboard");
-      } else if (input.role === "admin") {
-        navigate("/admin/dashboard");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(""); // Clear any previous error
+
+    try {
+      // Handle Login
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/users/login",
+        formData,
+        { withCredentials: true }
+      );
+      localStorage.setItem("token", response.data.token);
+      if (formData.role === "normal_user") {
+        // Assuming response.data contains user information
+        const userData = response.data.user; // Adjust this based on your API response
+        localStorage.setItem("user", JSON.stringify(userData));
+        navigate("/profile"); // Navigate to the profile page
       } else {
-        navigate("/");
+        localStorage.setItem("admin", JSON.stringify({ jd: formData.role }));
+        navigate("/admin");
       }
-    } catch (error) {
-      console.log(error);
-      setError("Invalid Credentials");
+      toast.success("Login successful!"); // Show success toast
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(err.response?.data?.message || "Login failed");
+      toast.error(err.response?.data?.message || "Login failed"); // Show error toast
     }
   };
 
-  const changeHandler = (event) => {
-    const { name, value } = event.target;
-    setInput((prevInput) => ({
-      ...prevInput,
-      [name]: value,
-    }));
-    setError(null);
-  };
-
   return (
-    <div className="flex justify-center items-center m-auto w-[100vw] min-h-[100vh]">
-      <div className="min-w-[30%] p-8 bg-white shadow-[0px_10px_1px_rgba(221,_221,_221,_1),_0_10px_20px_rgba(204,_204,_204,_1)] rounded-lg">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#640f12]"
-              value={input.email}
-              onChange={changeHandler}
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#640f12]"
-              value={input.password}
-              onChange={changeHandler}
-              required
-            />
-          </div>
+    <div className="flex justify-center items-center min-h-screen bg-white">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-4 rounded shadow-md w-full max-w-md"
+      >
+        <h2 className="text-2xl font-bold mb-6 text-gray-800">Log In</h2>
 
-          <div className="mb-4">
-            <select
-              name="role"
-              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#640f12]"
-              value={input.role}
-              onChange={changeHandler}
-              required
-            >
-              <option value="faculty">Faculty</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
 
-          <div className="text-sm mb-5">
-            <Link
-              to="#"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              Forgot your password?
-            </Link>
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-[#640f12] text-white p-3 rounded-md hover:bg-[#4a0b0e] transition duration-200"
-          >
-            Login
-          </button>
-        </form>
-        <div className="mt-4 text-center">
-          <p>Don't have an account?</p>
-          <Link to="/signup" className="text-[#640f12] hover:underline">
-            Signup here
-          </Link>
+        <div className="mb-4">
+          <label className="block text-gray-700">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border rounded focus:outline-none focus:border-[#640F12]"
+          />
         </div>
-      </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700">Password</label>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            className="w-full px-3 py-2 border rounded focus:outline-none focus:border-[#640F12]"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700">Role</label>
+          <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded focus:outline-none focus:border-[#640F12]"
+          >
+            <option value="normal_user">Normal User</option>
+            <option value="electric_jd">Electric JD</option>
+            <option value="plumbing_jd">Plumbing JD</option>
+            <option value="carpentry_jd">Carpentry JD</option>
+            <option value="networking_jd">Networking JD</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-[#640F12] text-white py-2 rounded hover:bg-[#8b1a1f] transition-colors"
+        >
+          Log In
+        </button>
+
+        <p className="mt-4 text-center text-gray-700">
+          Don't have an account?{" "}
+          <span
+            onClick={() => navigate("/signup")} // Navigate to the signup route
+            className="text-[#640F12] cursor-pointer"
+          >
+            Sign Up
+          </span>
+        </p>
+      </form>
     </div>
   );
-}
+};
 
-export default LoginPage;
+export default LoginForm;

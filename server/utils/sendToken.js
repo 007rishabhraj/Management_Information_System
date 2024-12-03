@@ -1,9 +1,11 @@
-
 const sendToken = (user, statuscode, token, res) => {
+  // Set different expiration times based on the user's role
+  const expireTime = user.role != "normal_user" ? null : 20 * 60 * 1000; // JDs don’t expire, normal users expire after 20 mins
+
   res.cookie("token", token, {
-    expires: new Date(Date.now() + 20 * 60 * 1000), // 20 minutes
-    httpOnly: true, // Make sure this is true for security
-    sameSite: "strict", // Adjust this based on your CORS requirements
+    expires: expireTime ? new Date(Date.now() + expireTime) : null, // Null for session cookies
+    httpOnly: true,
+    sameSite: "strict",
   });
 
   user.password = undefined;
