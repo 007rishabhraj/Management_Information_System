@@ -1,9 +1,9 @@
-import morgan from "morgan";
-import express from "express";
-import cors from "cors";
-import { userRouter } from "./routes/userRouter.js";
 import cookieParser from "cookie-parser";
-import helmet from 'helmet'
+import cors from "cors";
+import express from "express";
+import helmet from "helmet";
+import morgan from "morgan";
+import { userRouter } from "./routes/userRouter.js";
 
 
 const corsOption = {
@@ -21,5 +21,3 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
 app.use("/api/v1/users", userRouter);
-
-
