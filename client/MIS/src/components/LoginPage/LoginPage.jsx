@@ -90,10 +90,10 @@ const LoginForm = () => {
             className="w-full px-3 py-2 border rounded focus:outline-none focus:border-[#640F12]"
           >
             <option value="normal_user">Normal User</option>
-            <option value="electric_jd">Electric JD</option>
-            <option value="plumbing_jd">Plumbing JD</option>
-            <option value="carpentry_jd">Carpentry JD</option>
-            <option value="networking_jd">Networking JD</option>
+            <option value="electric_jd">Electric JE</option>
+            <option value="plumbing_jd">Plumbing JE</option>
+            <option value="carpentry_jd">Carpentry JE</option>
+            <option value="networking_jd">Networking JE</option>
             <option value="admin">Admin</option>
           </select>
         </div>
