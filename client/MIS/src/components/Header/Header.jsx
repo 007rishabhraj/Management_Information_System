@@ -1,62 +1,72 @@
-const Profile = () => {
-  return (
-    <nav className="bg-[#4a0b0e] shadow-lg p-4 sticky top-0">
-      <div className="container flex items-center justify-between mx-auto">
-        {/* Left side of the navbar */}
-        <div className="flex items-center ml-4">
-          <img
-            src="https://nith.ac.in/uploads/settings/15795036012617.png"
-            alt="Logo"
-            className="h-20 rounded-full object-cover"
-          />
-        </div>
 
-        {/* Right side of the navbar */}
-        <ul className="flex space-x-4 mr-4">
-          <li>
-            <a
-              href="https://www.facebook.com/Official.NITHamirpur"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-800 text-2xl"
-            >
-              <i className="fab fa-facebook"></i> {/* Corrected class */}
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://twitter.com/nithamirpurhp"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-400 hover:text-blue-600 text-2xl"
-            >
-              <i className="fab fa-twitter"></i> 
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.linkedin.com/mwlite/in/nithamirpur-hamirpur-4688551b9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-700 hover:text-blue-900 text-2xl"
-            >
-              <i className="fab fa-linkedin"></i>
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-pink-500 hover:text-pink-700 text-2xl"
-            >
-              <i className="fab fa-instagram"></i> {/* Corrected class */}
-            </a>
-          </li>
-        </ul>
+
+
+import Logo from "../../assets/logo_NIT.png"; // Import your logo
+
+const Header = () => {
+  return (
+    <header className="bg-[#4a0b0e] text-white shadow-md">
+      {/* Top Section: Logo and Titles */}
+      <div className="container mx-auto flex items-center justify-between py-4 px-6">
+        {/* Left Section: Logo and Titles */}
+        <div className="flex items-center">
+          {/* Logo */}
+          <img src={Logo} alt="NIT Hamirpur Logo" className=" h-20 mr-4" />
+
+                    {/* <img src={Logo} alt="NIT Hamirpur Logo" className="w-16 h-16 mr-4" /> */}
+
+          {/* Titles */}
+          <div className="text-center">
+            <h1 className="text-2xl font-bold leading-tight">
+              राष्ट्रीय प्रौद्योगिकी संस्थान हमीरपुर
+            </h1>
+            <p className="text-sm italic">(एक राष्ट्रीय महत्व का संस्थान)</p>
+            <h2 className="text-xl font-semibold mt-1">
+              National Institute of Technology Hamirpur
+            </h2>
+            <p className="text-sm italic">(An Institute of National Importance)</p>
+          </div>
+        </div>
+        {/* Social Media Links */}
+        <div className="flex space-x-4">
+          <a
+            href="https://www.facebook.com/Official.NITHamirpur"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-600"
+          >
+            <i className="fab fa-facebook text-xl"></i>
+          </a>
+          <a
+            href="https://twitter.com/nithamirpurhp"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-400"
+          >
+            <i className="fab fa-twitter text-xl"></i>
+          </a>
+          <a
+            href="https://www.linkedin.com/mwlite/in/nithamirpur-hamirpur-4688551b9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-700"
+          >
+            <i className="fab fa-linkedin text-xl"></i>
+          </a>
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-pink-500"
+          >
+            <i className="fab fa-instagram text-xl"></i>
+          </a>
+        </div>
       </div>
-    </nav>
+
+     
+    </header>
   );
 };
 
-export default Profile;
+export default Header;

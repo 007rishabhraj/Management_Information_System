@@ -8,7 +8,7 @@ const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "normal_user", // Default role
+    role: "", // Default role
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -89,6 +89,9 @@ const LoginForm = () => {
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded focus:outline-none focus:border-[#640F12]"
           >
+              <option value="" disabled>
+              Select Role
+            </option>
             <option value="normal_user">Normal User</option>
             <option value="electric_jd">Electric JE</option>
             <option value="plumbing_jd">Plumbing JE</option>
