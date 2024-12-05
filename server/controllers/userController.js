@@ -36,7 +36,7 @@ import sendToken from "../utils/sendToken.js";
 
 
  const createUser = async (req, res) => {
-  const { username, password, role, RoomNo,confirmPassword,email } = req.body;
+  const { username, password, role, roomNo , confirmPassword,email } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -59,7 +59,7 @@ import sendToken from "../utils/sendToken.js";
       email,
       password: hashedPassword,
       role,
-      RoomNo,
+      roomNo,
     });
     await newUser.save();
     res
@@ -101,12 +101,13 @@ export const getUser = async (req, res) => {
 };
 
  const updateUserProfile = async (req, res) => {
-  const { username, email, homeRoomNo } = req.body;
+  console.log(req.body)
+  const { username, email, roomNo } = req.body;
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
-      { username, email, homeRoomNo },
+      { username, email, roomNo },
       { new: true, runValidators: true } // Return the updated document and validate
     ).select("-password");
 

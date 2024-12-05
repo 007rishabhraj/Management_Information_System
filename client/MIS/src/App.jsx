@@ -14,7 +14,8 @@ import { Outlet } from "react-router-dom";
 import AdminDashboard from "./components/AdminDashboard/Admindashboard";
 import AdminLogin from "./components/Adminlogin/Adminlogin";
 import UserHistory from "./components/UserHistory/UserHistory";
-import JeInfo from "./components/JeInfo/JeInfo.jsx";
+import JeInfo from "./components/JeInfo/JeInfo";
+import UpdateUser from "./components/UpdateUser/UpdateUser";
 
 axios.defaults.withCredentials = true;
 const RootLayout = () => (
@@ -40,6 +41,7 @@ const router = createBrowserRouter([
       { path: "adminlogin", element: < AdminLogin/> },
       { path: "user-history", element: < UserHistory/> },
       { path: "JeInfo", element: < JeInfo/> },
+      { path: "UpdateUser", element: < UpdateUser/> },
     ],
   },
 ]);

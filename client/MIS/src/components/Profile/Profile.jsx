@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../store/Auth";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
+
 
 function ProfilePage() {
   // const { user, setUser } = useAuth();
@@ -27,7 +28,7 @@ function ProfilePage() {
               },
             }
           );
-
+          alert("hello")
           // Set the fetched profile and update user context
           setProfile(response.data);
           localStorage.setItem("user" , JSON.stringify(response.data.user))
@@ -110,21 +111,21 @@ function ProfilePage() {
             />
           </div>
           <div className="mb-6">
-            <h3 className="text-xl font-semibold">Name:</h3>
+            <h3 className="text-xl font-semibold">Name :</h3>
             <p className="text-lg p-3 border border-gray-300 rounded-md">
               {profile.username}
             </p>
           </div>
           <div className="mb-6">
-            <h3 className="text-xl font-semibold">Email:</h3>
+            <h3 className="text-xl font-semibold">Email :</h3>
             <p className="text-lg p-3 border border-gray-300 rounded-md">
               {profile.email}
             </p>
           </div>
           <div className="mb-6">
-            <h3 className="text-xl font-semibold">Role:</h3>
+            <h3 className="text-xl font-semibold">Room No. :</h3>
             <p className="text-lg p-3 border border-gray-300 rounded-md">
-              {profile.role}
+              {profile.roomNo}
             </p>
           </div>
           <div className="flex justify-between">
@@ -135,7 +136,7 @@ function ProfilePage() {
               Logout
             </button>
             <button
-              onClick={() => navigate("/edit-profile")}
+              onClick={() => navigate("/UpdateUser")}
               className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
             >
               Edit Profile

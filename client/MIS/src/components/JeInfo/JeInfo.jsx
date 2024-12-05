@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+function role(r){
+  if(r === "electric_jd") return "Electric JE"
+  if(r === "plumbing_jd") return "Plumbing JE"
+  if(r === "carpentry_jd") return "Carpentry JE"
+  if(r === "networking_jd") return "Networking JE"
+}
+
 const JeInfo = ()=>{
   const [jes , setJes] = useState([]);
   useEffect(() => {
@@ -12,7 +19,6 @@ const JeInfo = ()=>{
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             });
-            console.log(response.data)
             setJes(response.data || []);
         } catch (err) {
             console.error("Error fetching complaints :", err);
@@ -50,7 +56,7 @@ const JeInfo = ()=>{
                     {je.username}
                   </h4>
                   <p className="text-m text-gray-700">
-                    Role : {je.role}
+                    Role : {role(je.role)}
                   </p>
                   <p className="text-m text-gray-700">
                     Email : {je.email}
