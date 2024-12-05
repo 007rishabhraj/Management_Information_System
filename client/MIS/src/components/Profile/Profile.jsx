@@ -61,7 +61,7 @@ function ProfilePage() {
     <div className="flex flex-row min-h-[100vh]">
       {/* Sidebar */}
       <div className="w-1/4 bg-gray-800 text-white p-6">
-        <h2 className="text-xl font-semibold mb-6">Faculty Options</h2>
+        <h2 className="text-xl font-semibold mb-6 ">Faculty Options</h2>
         <ul className="space-y-4">
           <li>
             <button
@@ -81,23 +81,15 @@ function ProfilePage() {
           </li>
           <li>
             <button
-              onClick={() => navigate("/profile/feedback-request")}
+              onClick={() => navigate("/jeInfo")}
               className="text-left w-full hover:bg-gray-700 p-2 rounded"
             >
-              My Complaints
+              All JE's list
             </button>
           </li>
           <li>
             <button
-              onClick={() => navigate("/profile/document-information")}
-              className="text-left w-full hover:bg-gray-700 p-2 rounded"
-            >
-              Document
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => navigate("/profile/document-history")}
+              onClick={() => navigate("/user-history")}
               className="text-left w-full hover:bg-gray-700 p-2 rounded"
             >
               History
