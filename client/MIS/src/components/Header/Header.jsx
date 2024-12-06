@@ -1,7 +1,7 @@
 
 
 
-import Logo from "../../assets/logo_NIT.png"; // Import your logo
+import Logo from "../../../public/National_Institute_of_Technology,_Hamirpur_Logo.png"; // Import your logo
 
 const Header = () => {
   return (

@@ -38,7 +38,7 @@ const Home = () => {
         </div>
         <button
           onClick={handleClick}
-          className="bg-brown-600 text-white py-2 px-4 rounded shadow hover:bg-brown-700 transition duration-200"
+          className="bg-brown-600 border-black text-black py-2 px-4 rounded shadow hover:bg-brown-700 transition duration-200"
         >
           Login / Sign Up
         </button>
