@@ -27,7 +27,7 @@ const getDepartmentComplaints = async (req, res) => {
   try {
     const complaints = await Complaint.find({ department }).populate(
       "user",
-      "username email"
+      "username email phoneNo",
     ); // Populate user info
     res.json(complaints);
   } catch (error) {

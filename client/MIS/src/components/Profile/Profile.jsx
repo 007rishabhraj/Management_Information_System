@@ -2,67 +2,57 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-
-
 function ProfilePage() {
-  // const { user, setUser } = useAuth();
-  const rawData = localStorage.getItem("user")
+  const rawData = localStorage.getItem("user");
   let user = null;
-  if(rawData) user = JSON.parse(rawData);
-  const [profile, setProfile] = useState(null);
+  if (rawData) user = JSON.parse(rawData);
+
+  const [profile, setProfile] = useState(user);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        // If user is present in context, set profile to user directly
         if (user) {
           setProfile(user);
         } else {
-          // Attempt to fetch user data from the server
-          const response = await axios.get(
-            "http://127.0.0.1:8000/api/v1/users/",
-            {
-              headers: {
-                Authorization: `Bearer ${user?.token}`, // Include token if available
-              },
-            }
-          );
-          alert("hello")
-          // Set the fetched profile and update user context
+          const response = await axios.get("http://127.0.0.1:8000/api/v1/users/", {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          });
           setProfile(response.data);
-          localStorage.setItem("user" , JSON.stringify(response.data.user))
-          // setUser(response.data.user);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
         }
       } catch (error) {
         console.error("Error fetching profile data", error);
-        // Optional: Navigate to login if there's an authentication error
-        if (error.response && error.response.status === 401) {
-          // Unauthorized access, navigate to login
-          // setUser(null); // Clear user from context
+        if (error.response?.status === 401) {
           navigate("/login");
         }
       }
     };
 
     fetchProfile();
-  }, []); // Ensure dependencies are correct
+  }, [user, navigate]);
 
   const handleLogout = () => {
-    // setUser(null);
-    localStorage.setItem("user" , "")
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
   if (!profile) {
-    return <p>Loading profile...</p>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p>Loading profile...</p>
+      </div>
+    );
   }
 
   return (
-    <div className="flex flex-row min-h-[100vh]">
+    <div className="flex flex-col md:flex-row min-h-[100vh]">
       {/* Sidebar */}
-      <div className="w-1/4 bg-gray-800 text-white p-6">
-        <h2 className="text-xl font-semibold mb-6 ">Faculty Options</h2>
+      <div className="w-full md:w-1/4 bg-gray-800 text-white p-6">
+        <h2 className="text-xl font-semibold mb-6">Faculty Options</h2>
         <ul className="space-y-4">
           <li>
             <button
@@ -85,7 +75,7 @@ function ProfilePage() {
               onClick={() => navigate("/jeInfo")}
               className="text-left w-full hover:bg-gray-700 p-2 rounded"
             >
-              All JE's list
+              All JE's List
             </button>
           </li>
           <li>
@@ -100,35 +90,41 @@ function ProfilePage() {
       </div>
 
       {/* Profile Content */}
-      <div className="w-3/4 p-8 bg-gray-100">
-        <div className="bg-white p-8 shadow-lg rounded-lg">
-          <h2 className="text-3xl font-bold mb-8 text-center">Your Profile</h2>
-          <div className="flex justify-center mb-8">
+      <div className="w-full md:w-3/4 p-4 md:p-8 bg-gray-100">
+        <div className="bg-white p-6 md:p-8 shadow-lg rounded-lg">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">Your Profile</h2>
+          <div className="flex justify-center mb-6">
             <img
               src={profile.profilePicture || "https://via.placeholder.com/150"}
               alt="Profile"
-              className="w-32 h-32 rounded-full border-2 border-gray-300"
+              className="w-24 h-24 md:w-32 md:h-32 rounded-full border-2 border-gray-300"
             />
           </div>
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold">Name :</h3>
-            <p className="text-lg p-3 border border-gray-300 rounded-md">
+          <div className="mb-4">
+            <h3 className="text-lg md:text-xl font-semibold">Name:</h3>
+            <p className="text-base md:text-lg p-3 border border-gray-300 rounded-md">
               {profile.username}
             </p>
           </div>
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold">Email :</h3>
-            <p className="text-lg p-3 border border-gray-300 rounded-md">
+          <div className="mb-4">
+            <h3 className="text-lg md:text-xl font-semibold">Email:</h3>
+            <p className="text-base md:text-lg p-3 border border-gray-300 rounded-md">
               {profile.email}
             </p>
           </div>
-          <div className="mb-6">
-            <h3 className="text-xl font-semibold">Room No. :</h3>
-            <p className="text-lg p-3 border border-gray-300 rounded-md">
+          <div className="mb-4">
+            <h3 className="text-lg md:text-xl font-semibold">Room No.:</h3>
+            <p className="text-base md:text-lg p-3 border border-gray-300 rounded-md">
               {profile.roomNo}
             </p>
           </div>
-          <div className="flex justify-between">
+          <div className="mb-4">
+            <h3 className="text-lg md:text-xl font-semibold">Contact:</h3>
+            <p className="text-base md:text-lg p-3 border border-gray-300 rounded-md">
+              {profile.phoneNo}
+            </p>
+          </div>
+          <div className="flex flex-col md:flex-row justify-between space-y-4 md:space-y-0">
             <button
               onClick={handleLogout}
               className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 transition duration-200"

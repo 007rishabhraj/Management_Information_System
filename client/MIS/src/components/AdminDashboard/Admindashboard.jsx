@@ -130,6 +130,12 @@ const AdminDashboard = () => {
                     {complaint.description}
                   </h4>
                   <p className="text-m text-gray-700">
+                    From: {complaint.user.username}
+                  </p>
+                  <p className="text-m text-gray-700">
+                    Contact: {complaint.user.phoneNo}
+                  </p>
+                  <p className="text-m text-gray-700">
                     Status: {complaint.status}
                   </p>
                   <p className="text-m text-gray-700">
@@ -155,18 +161,26 @@ const AdminDashboard = () => {
                 key={complaint._id}
                 className="p-4 border border-gray-200 rounded-md"
               >
-                <h4 className="text-xl font-semibold">
-                  {complaint.description}
-                </h4>
-                <p className="text-m text-gray-700">
-                  Status: {complaint.status}
-                </p>
-                <p className="text-m text-gray-700">
-                  Location: {complaint.location}
-                </p>
-                <p className="text-m text-gray-700">
-                  Availability: {formatDateTime(complaint.availability.start)} to {formatDateTime(complaint.availability.end)}
-                </p>
+                <div>
+                  <h4 className="text-xl font-semibold">
+                    {complaint.description}
+                  </h4>
+                  <p className="text-m text-gray-700">
+                    From: {complaint.user.username}
+                  </p>
+                  <p className="text-m text-gray-700">
+                    Contact: {complaint.user.phoneNo}
+                  </p>
+                  <p className="text-m text-gray-700">
+                    Status: {complaint.status}
+                  </p>
+                  <p className="text-m text-gray-700">
+                    Location: {complaint.location}
+                  </p>
+                  <p className="text-m text-gray-700">
+                    Availability: {formatDateTime(complaint.availability.start)} to {formatDateTime(complaint.availability.end)}
+                  </p>
+                </div>
               </li>
             ))}
           </ul>

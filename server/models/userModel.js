@@ -31,7 +31,10 @@ const userSchema = new mongoose.Schema({
       "admin",
     ],
   },
-  RoomNo: {
+  roomNo: {
+    type: String,
+  },
+  phoneNo: {
     type: String,
   },
 });

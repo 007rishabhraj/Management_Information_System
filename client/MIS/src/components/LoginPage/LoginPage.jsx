@@ -33,6 +33,7 @@ const LoginForm = () => {
       if (formData.role === "normal_user") {
         // Assuming response.data contains user information
         const userData = response.data.user; // Adjust this based on your API response
+        // console.log(response.data)
         localStorage.setItem("user", JSON.stringify(userData));
         navigate("/profile"); // Navigate to the profile page
       } else {

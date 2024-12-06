@@ -13,8 +13,8 @@ const UpdateUser = () => {
 //   console.log(user)
   const [formData, setFormData] = useState({
     username: user.username,
-    phone: "",
-    roomNo: ""
+    phoneNo: user.phoneNo || "",
+    roomNo: user.roomNo || "",
   });
 
   const handleInputChange = (e) => {
@@ -26,12 +26,13 @@ const UpdateUser = () => {
     e.preventDefault();
     // console.log("Updated Details:", formData);
     try {
-        await axios.post(
+        const response = await axios.post(
           "http://127.0.0.1:8000/api/v1/users/updateUser",
           {
             email : user.email,
             username : formData.username,
             roomNo : formData.roomNo,
+            phoneNo : formData.phoneNo,
           },
           { 
             withCredentials: true,
@@ -41,6 +42,8 @@ const UpdateUser = () => {
          }
         );
         user.username = formData.username;
+        user.roomNo = formData.roomNo;
+        user.phoneNo = formData.phoneNo;
         localStorage.setItem("user" , JSON.stringify(user))
         alert("Profile Successfully Edited")
         navigate("/profile");
@@ -72,8 +75,8 @@ const UpdateUser = () => {
             <label className="block text-gray-600 mb-2">Phone</label>
             <input
               type="tel"
-              name="phone"
-              value={formData.phone}
+              name="phoneNo"
+              value={formData.phoneNo}
               onChange={handleInputChange}
               className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
