@@ -27,7 +27,8 @@ const ComplaintForm = () => {
     setSuccess("");
 
     // Form validation
-    const {
+    
+    let {
       department,
       description,
       availabilityStart,
@@ -44,6 +45,10 @@ const ComplaintForm = () => {
       setError("All fields are required.");
       return;
     }
+    if(location==="Home")
+    {
+      location += " room No. " + JSON.parse(localStorage.getItem("user")).roomNo;
+    };
 
     try {
       const response = await axios.post(

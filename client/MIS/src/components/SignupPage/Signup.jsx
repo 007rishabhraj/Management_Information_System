@@ -13,8 +13,9 @@ const SignupForm = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "", // Default to empty for placeholder
+    role: "",
     roomNo: "",
+    phoneNo: "+91 ",
   });
   const [error, setError] = useState("");
 
@@ -26,6 +27,7 @@ const SignupForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    // console.log(formData)
 
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
@@ -137,6 +139,17 @@ const SignupForm = () => {
             type="text"
             name="roomNo"
             value={formData.roomNo}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border rounded focus:outline-none focus:border-[#640F12]"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700">Room No</label>
+          <input
+            type="text"
+            name="phoneNo"
+            value={formData.phoneNo}
             onChange={handleChange}
             className="w-full px-3 py-2 border rounded focus:outline-none focus:border-[#640F12]"
           />

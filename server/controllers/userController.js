@@ -36,7 +36,7 @@ import sendToken from "../utils/sendToken.js";
 
 
  const createUser = async (req, res) => {
-  const { username, password, role, roomNo , confirmPassword,email } = req.body;
+  const { username, password, role, roomNo , confirmPassword,email, phoneNo } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -94,6 +94,7 @@ export const getUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    console.log(user)
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: "Error fetching user details", error });
@@ -101,15 +102,14 @@ export const getUser = async (req, res) => {
 };
 
  const updateUserProfile = async (req, res) => {
-  console.log(req.body)
-  const { username, email, roomNo } = req.body;
-
+  const { username, email, roomNo ,phoneNo } = req.body;
   try {
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,
-      { username, email, roomNo },
+      { username, email, roomNo , phoneNo },
       { new: true, runValidators: true } // Return the updated document and validate
     ).select("-password");
+    // console.log(updatedUser)
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
