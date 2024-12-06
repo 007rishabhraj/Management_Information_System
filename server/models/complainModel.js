@@ -7,6 +7,11 @@ const complaintSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    rating:{
+      type:Number,
+      min:0,
+      max:5
+    },
     department: {
       type: String,
       required: true,

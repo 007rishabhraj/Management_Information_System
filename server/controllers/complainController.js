@@ -76,9 +76,44 @@ const getUserComplaints = async (req, res) => {
   }
 };
 
+
+const updateRating=async (req,res)=>{
+   try {
+    const { id } = req.params; // Complaint ID
+    const { newRating} = req.body;
+
+    // Validate input
+    if (!newRating || newRating < 1 || newRating > 5) {
+      return res.status(400).json({ error: 'Rating must be between 1 and 5.' });
+    }
+
+    // Fetch the complaint
+    const complaint = await Complaint.findById(id);
+    if (!complaint) {
+      return res.status(404).json({ error: 'Complaint not found.' });
+    }
+
+    
+
+    // Update the rating and comments
+    complaint.rating = newRating;
+    await complaint.save();
+
+    return res.json({
+      message: 'Rating updated successfully.',
+      complaint,
+    });
+  } catch (error) {
+    console.error('Error updating rating:', error);
+    return res.status(500).json({ error: 'Internal server error.' });
+  }
+}
+
+
 export default {
   createComplaint,
   getDepartmentComplaints,
   updateComplaintStatus,
-  getUserComplaints
+  getUserComplaints,
+  updateRating
 };
