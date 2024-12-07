@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify"; // Import toast for notifications
@@ -17,6 +17,10 @@ const LoginForm = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  useEffect(()=>{
+    if(localStorage.getItem("user")) navigate("/profile");
+  },[])
 
   const handleSubmit = async (e) => {
     e.preventDefault();

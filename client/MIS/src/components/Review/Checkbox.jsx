@@ -1,11 +1,32 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const CheckBox = () => {
+
+const CheckBox = ({complaintId}) => {
   const [response, setResponse] = useState("");
-
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`You selected: ${response}`);
+    console.log(response)
+    try{
+      const path = `http://localhost:8000/api/v1/users/complaints/${complaintId}`;
+      await axios.patch(path, 
+      {
+        complaintId,
+        statusByUser : (response==="Yes" ? "completed" : "notCompleted" ),
+      }, 
+      {
+          headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+      });
+      navigate("/review", { state: { complaintId } });
+    }
+    catch(err)
+    {
+      console.log(err);
+    }
   };
 
   return (

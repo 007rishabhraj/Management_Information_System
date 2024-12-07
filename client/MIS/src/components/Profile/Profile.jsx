@@ -61,14 +61,14 @@ function ProfilePage() {
               Complain
             </button>
           </li>
-          <li>
+          {/* <li>
             <button
               onClick={() => navigate("/feedback")}
               className="text-left w-full hover:bg-gray-700 p-2 rounded"
             >
               Feedback
             </button>
-          </li>
+          </li> */}
           <li>
             <button
               onClick={() => navigate("/jeInfo")}

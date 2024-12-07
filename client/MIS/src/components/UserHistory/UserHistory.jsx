@@ -43,6 +43,7 @@ const UserHistory = ()=>{
             },
           });
           setComplaints(response.data.complaints || []);
+          console.log(response.data.complaints);
         } catch (err) {
           console.error("Error fetching complaints :", err);
           setComplaints([]);
@@ -62,10 +63,9 @@ const UserHistory = ()=>{
   let completedComplaints = [];
   try{
     pendingComplaints = complaints.filter(complaint => complaint.status === "pending");
-    completedComplaints = complaints.filter(complaint => complaint.status === "completed");
+    completedComplaints = complaints.filter(complaint => complaint.status === "completed"  && complaint.statusByUser === "pending");
   }
   catch(err){
-    console.log(typeof complaints)
     console.log(err)
   }
   
@@ -157,7 +157,7 @@ const UserHistory = ()=>{
 
                 {/* Right Content */}
                 <div className="ml-4">
-                  <CheckBox />
+                  <CheckBox complaintId={complaint._id} />
                 </div>
               </li>
             ))}

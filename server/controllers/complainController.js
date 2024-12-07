@@ -56,11 +56,11 @@ const updateComplaintStatus = async (req, res) => {
       res.status(200).json({ message: "Complaint status updated", complaint });
   }
   else{
-    const validStatuses = ["pending", "in-progress", "completed","closed"];
-      if (!validStatuses.includes(status)) {
+    console.log(statusByUser)
+    const validStatuses = ["notCompleted" , "completed"];
+      if (!validStatuses.includes(statusByUser)) {
         return res.status(400).json({ message: "Invalid status" });
       }
-
       const complaint = await Complaint.findById(complaintId);
       if (!complaint) {
         return res.status(404).json({ message: "Complaint not found" });
@@ -81,7 +81,7 @@ const updateComplaintStatus = async (req, res) => {
 const getUserComplaints = async (req, res) => {
   try {
     const complaints = await Complaint.find({ user: req.user._id }).select(
-      "department location availability description status createdAt"
+      "department location availability description status createdAt statusByUser"
     );
 
     res.status(200).json({ complaints });
@@ -97,10 +97,10 @@ const getUserComplaints = async (req, res) => {
 const updateRating=async (req,res)=>{
    try {
     const { id } = req.params; // Complaint ID
-    const { newRating} = req.body;
-
+    const { rating , feedback} = req.body;
+    console.log(rating , feedback)
     // Validate input
-    if (!newRating || newRating < 1 || newRating > 5) {
+    if (!rating || rating < 1 || rating > 5) {
       return res.status(400).json({ error: 'Rating must be between 1 and 5.' });
     }
 
@@ -113,7 +113,8 @@ const updateRating=async (req,res)=>{
     
 
     // Update the rating and comments
-    complaint.rating = newRating;
+    complaint.rating = rating;
+    complaint.feedback = feedback;
     await complaint.save();
 
     return res.json({
