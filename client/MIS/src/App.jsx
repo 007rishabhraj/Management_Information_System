@@ -16,7 +16,9 @@ import AdminLogin from "./components/Adminlogin/Adminlogin";
 import UserHistory from "./components/UserHistory/UserHistory";
 import JeInfo from "./components/JeInfo/JeInfo";
 import UpdateUser from "./components/UpdateUser/UpdateUser";
-
+import ReviewPage from "./components/Review/Review";
+import WorkDoneForm from "./components/Review/Checkbox";
+import CheckBox from "./components/Review/Checkbox";
 axios.defaults.withCredentials = true;
 const RootLayout = () => (
   <>
@@ -42,6 +44,8 @@ const router = createBrowserRouter([
       { path: "user-history", element: < UserHistory/> },
       { path: "JeInfo", element: < JeInfo/> },
       { path: "UpdateUser", element: < UpdateUser/> },
+      {path: "review",element:<ReviewPage/>},
+      {path:"check",element:<CheckBox/>}
     ],
   },
 ]);

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import CheckBox from "../Review/Checkbox";
 
 function formatDateTime(isoString) {
   const date = new Date(isoString);
@@ -70,23 +71,27 @@ const UserHistory = ()=>{
   
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-  bg-gray-100 min-h-screen">
       <header className="bg-white p-4 shadow-md rounded-md mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">
-          All Complaints
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-800">All Complaints</h2>
       </header>
       <main className="bg-white p-4 shadow-md rounded-md">
         {/* Tabs for switching between pending and completed complaints */}
         <div className="flex space-x-4 mb-4">
           <button
-            className={`px-4 py-2 rounded-md ${activeTab === "pending" ? "bg-blue-500 text-white"  : "bg-gray-200"}`}
+            className={`px-4 py-2 rounded-md ${
+              activeTab === "pending" ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
             onClick={() => setActiveTab("pending")}
           >
             Pending Complaints
           </button>
           <button
-            className={`px-4 py-2 rounded-md ${activeTab === "completed" ? "bg-blue-500 text-white"  : "bg-gray-200"}`}
+            className={`px-4 py-2 rounded-md ${
+              activeTab === "completed"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200"
+            }`}
             onClick={() => setActiveTab("completed")}
           >
             Completed Complaints
@@ -115,31 +120,45 @@ const UserHistory = ()=>{
                     Location : {complaint.location}
                   </p>
                   <p className="text-m text-gray-700">
-                    Availability : {formatDateTime(complaint.availability.start)} to {formatDateTime(complaint.availability.end)}
+                    Availability :{" "}
+                    {formatDateTime(complaint.availability.start)} to{" "}
+                    {formatDateTime(complaint.availability.end)}
                   </p>
                 </div>
               </li>
             ))}
           </ul>
-        )  : activeTab === "completed" && completedComplaints.length > 0 ? (
+        ) : activeTab === "completed" && completedComplaints.length > 0 ? (
           <ul className="space-y-4">
             {completedComplaints.map((complaint) => (
               <li
                 key={complaint._id}
-                className="p-4 border border-gray-200 rounded-md"
+                className="p-4 border border-gray-200 rounded-md flex justify-between items-center"
               >
-                <h4 className="text-xl font-semibold">
-                  {complaint.description}
-                </h4>
-                <p className="text-m text-gray-700">
-                  Status : {complaint.status}
-                </p>
-                <p className="text-m text-gray-700">
-                  Location : {complaint.location}
-                </p>
-                <p className="text-m text-gray-700">
-                  Availability : {formatDateTime(complaint.availability.start)} to {formatDateTime(complaint.availability.end)}
-                </p>
+                {/* Left Content */}
+                <div className="flex-1">
+                  <h4 className="text-xl font-semibold">
+                    {complaint.description}
+                  </h4>
+                  <p className="text-m text-gray-700">
+                    Department: {complaint.department}
+                  </p>
+                  <p className="text-m text-gray-700">
+                    Status: {complaint.status}
+                  </p>
+                  <p className="text-m text-gray-700">
+                    Location: {complaint.location}
+                  </p>
+                  <p className="text-m text-gray-700">
+                    Availability: {formatDateTime(complaint.availability.start)}{" "}
+                    to {formatDateTime(complaint.availability.end)}
+                  </p>
+                </div>
+
+                {/* Right Content */}
+                <div className="ml-4">
+                  <CheckBox />
+                </div>
               </li>
             ))}
           </ul>
