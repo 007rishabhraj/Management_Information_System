@@ -24,8 +24,11 @@ userRouter
   .patch(complainController.updateComplaintStatus);
 userRouter
   .route("/complain")
-  .all(verifyUser)
+  // .all(verifyUser)
   .post(complainController.createComplaint);
+userRouter                 ///update rating 
+  .route("/complain/:id/rating")
+  .patch(complainController.updateRating);
 userRouter
   .route("/department/electrical")
   .get(
