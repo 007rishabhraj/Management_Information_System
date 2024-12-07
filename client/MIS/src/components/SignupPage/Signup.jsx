@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 const SignupForm = () => {
   const navigate = useNavigate();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isPasswordVisible2, setIsPasswordVisible2] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -15,10 +17,16 @@ const SignupForm = () => {
     confirmPassword: "",
     role: "",
     roomNo: "",
-    phoneNo: "+91 ",
+    phoneNo: "",
   });
   const [error, setError] = useState("");
 
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible((prev) => !prev);
+  };
+  const togglePasswordVisibility2 = () => {
+    setIsPasswordVisible2((prev) => !prev);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -88,28 +96,53 @@ const SignupForm = () => {
           />
         </div>
 
+
         <div className="mb-4">
           <label className="block text-gray-700">Password</label>
+          <div className="flex border rounded focus:outline-none focus:border-[#640F12]">
           <input
-            type="password"
+            type={isPasswordVisible ? "text" : "password"}
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border rounded focus:outline-none focus:border-[#640F12]"
+            className="w-full px-3 py-2 border-t-0 border-r-0"
           />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            >
+            {isPasswordVisible ? (
+              <i className="fas fa-eye-slash mr-4"></i> // Replace with your preferred icon library
+            ) : (
+              <i className="fas fa-eye mr-4"></i> // Replace with your preferred icon library
+            )}
+          </button>
+          </div>
         </div>
 
         <div className="mb-4">
           <label className="block text-gray-700">Confirm Password</label>
+          <div className="flex border rounded focus:outline-none focus:border-[#640F12]">
           <input
-            type="password"
+            type={isPasswordVisible2 ? "text" : "password"}
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border rounded focus:outline-none focus:border-[#640F12]"
+            className="w-full px-3 py-2 border-t-0 border-r-0"
           />
+          <button
+            type="button"
+            onClick={togglePasswordVisibility2}
+            >
+            {isPasswordVisible2 ? (
+              <i className="fas fa-eye-slash mr-4"></i> // Replace with your preferred icon library
+            ) : (
+              <i className="fas fa-eye mr-4"></i> // Replace with your preferred icon library
+            )}
+          </button>
+          </div>
         </div>
 
         <div className="mb-4">
@@ -145,12 +178,14 @@ const SignupForm = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700">Room No</label>
+          <label className="block text-gray-700">Mobile No</label>
           <input
             type="text"
             name="phoneNo"
             value={formData.phoneNo}
             onChange={handleChange}
+            maxlength="10"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
             className="w-full px-3 py-2 border rounded focus:outline-none focus:border-[#640F12]"
           />
         </div>

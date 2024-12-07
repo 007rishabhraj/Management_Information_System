@@ -34,12 +34,15 @@ const complaintSchema = new mongoose.Schema(
     location: {
       type: String,
       required: true,
-      enum: ["lecture hall", "home","department", "hostel"], // Add more locations as needed
     },
     status: {
       type: String,
       default: "pending",
       enum: ["pending", "in-progress", "completed", "closed"], // Complaint status
+    },
+    statusByUser: {
+      type: String,
+      default: "pending",
     },
   },
   { timestamps: true }

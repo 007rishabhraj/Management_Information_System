@@ -11,10 +11,10 @@ const ComplaintForm = () => {
     availabilityEnd: "",
     location: "",
   });
+  const user = JSON.parse(localStorage.getItem("user"))
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
-  const { user } = useAuth(); // Get user info from context
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,7 +45,7 @@ const ComplaintForm = () => {
       setError("All fields are required.");
       return;
     }
-    if(location==="Home")
+    if(location==="home")
     {
       location += " room No. " + JSON.parse(localStorage.getItem("user")).roomNo;
     };
@@ -54,6 +54,7 @@ const ComplaintForm = () => {
       const response = await axios.post(
         "http://localhost:8000/api/v1/users/complain",
         {
+          user,
           department,
           description,
           availability: {
