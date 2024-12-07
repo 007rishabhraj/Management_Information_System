@@ -1,29 +1,47 @@
 import  { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 
 const ReviewPage = () => {
+  const location = useLocation();
+  const {complaintId} = location.state || {}; // Access passed state
   const [rating, setRating] = useState(0);
-  const [description, setDescription] = useState("");
+  const [feedback, setFeedback] = useState("");
   const [submittedReviews, setSubmittedReviews] = useState([]);
-
+  const navigate = useNavigate();
   const handleRatingChange = (value) => {
     setRating(value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (rating === 0 || description.trim() === "") {
-      alert("Please provide a rating and a description.");
+    if (rating === 0 || feedback.trim() === "") {
+      alert("Please provide a rating and a feedback.");
       return;
     }
-
-    const newReview = {
-      rating,
-      description,
-    };
-
-    setSubmittedReviews([newReview, ...submittedReviews]);
+    try{
+      const path = `http://localhost:8000/api/v1/users/complain/${complaintId}/rating`;
+      await axios.patch(path, 
+      {
+        complaintId,
+        rating,
+        feedback,
+      }, 
+      {
+          headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+      });
+      navigate("/profile");
+    }
+    catch(err)
+    {
+      console.log(err);
+    }
     setRating(0);
-    setDescription("");
+    setFeedback("");
   };
 
   return (
@@ -54,15 +72,15 @@ const ReviewPage = () => {
 
         <div className="mb-4">
           <label
-            htmlFor="description"
+            htmlFor="feedback"
             className="block text-gray-700 font-bold mb-2"
           >
-            Description
+            Feedback
           </label>
           <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            id="feedback"
+            value={feedback}
+            onChange={(e) => setFeedback(e.target.value)}
             rows="4"
             className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           ></textarea>

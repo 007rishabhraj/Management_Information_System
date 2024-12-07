@@ -90,8 +90,8 @@ const AdminDashboard = () => {
   }
 
   // Split complaints into pending and completed
-  const pendingComplaints = complaints.filter(complaint => complaint.status === "pending");
-  const completedComplaints = complaints.filter(complaint => complaint.status === "completed");
+  const pendingComplaints = complaints.filter(complaint => complaint.status === "pending" || complaint.statusByUser === "pending");
+  const completedComplaints = complaints.filter(complaint => complaint.status === "completed" && complaint.statusByUser !== "pending").reverse();
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
@@ -151,12 +151,14 @@ const AdminDashboard = () => {
                     Availability: {formatDateTime(complaint.availability.start)} to {formatDateTime(complaint.availability.end)}
                   </p>
                 </div>
+                {complaint.status!=="completed" ? (
                 <button
                   className="ml-4 px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
                   onClick={() => markAsCompleted(complaint._id)}
                 >
                   Mark as Completed
                 </button>
+                ) : <span></span>}
               </li>
             ))}
           </ul>
@@ -184,7 +186,7 @@ const AdminDashboard = () => {
                     Status: {complaint.status}
                   </p>
                   <p className="text-m text-gray-700">
-                    Status By User: {complaint.statusByUser}
+                    Status By User: {complaint.statusByUser==="completed" ? "Completed" : "Not Completed"}
                   </p>
                   <p className="text-m text-gray-700">
                     Location: {complaint.location}
@@ -192,12 +194,18 @@ const AdminDashboard = () => {
                   <p className="text-m text-gray-700">
                     Availability: {formatDateTime(complaint.availability.start)} to {formatDateTime(complaint.availability.end)}
                   </p>
+                  <p className="text-m text-gray-700">
+                    Feedback by User: {complaint.feedback}
+                  </p>
+                  <p className="text-m text-gray-700">
+                    Rating by User: {complaint.rating}
+                  </p>
                 </div>
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-gray-500">No {activeTab} complaints found for {admin.jd}</p>
+          <p className="text-gray-500">No {activeTab} complaints found</p>
         )}
       </main>
     </div>
