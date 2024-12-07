@@ -130,13 +130,19 @@ const AdminDashboard = () => {
                     {complaint.description}
                   </h4>
                   <p className="text-m text-gray-700">
+                    Complaint Id: {complaint._id}
+                  </p>
+                  <p className="text-m text-gray-700">
                     From: {complaint.user.username}
                   </p>
                   <p className="text-m text-gray-700">
-                    Contact: {complaint.user.phoneNo}
+                    Contact: +91 {complaint.user.phoneNo}
                   </p>
                   <p className="text-m text-gray-700">
                     Status: {complaint.status}
+                  </p>
+                  <p className="text-m text-gray-700">
+                    Status By User: {complaint.statusByUser}
                   </p>
                   <p className="text-m text-gray-700">
                     Location: {complaint.location}
@@ -166,13 +172,19 @@ const AdminDashboard = () => {
                     {complaint.description}
                   </h4>
                   <p className="text-m text-gray-700">
+                    Complaint Id: {complaint._id}
+                  </p>
+                  <p className="text-m text-gray-700">
                     From: {complaint.user.username}
                   </p>
                   <p className="text-m text-gray-700">
-                    Contact: {complaint.user.phoneNo}
+                    Contact: +91 {complaint.user.phoneNo}
                   </p>
                   <p className="text-m text-gray-700">
                     Status: {complaint.status}
+                  </p>
+                  <p className="text-m text-gray-700">
+                    Status By User: {complaint.statusByUser}
                   </p>
                   <p className="text-m text-gray-700">
                     Location: {complaint.location}

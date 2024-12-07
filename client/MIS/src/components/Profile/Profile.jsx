@@ -57,8 +57,7 @@ function ProfilePage() {
           <li>
             <button
               onClick={() => navigate("/complain")}
-              className="text-left w-full hover:bg-gray-700 p-2 rounded"
-            >
+              className="text-left w-full hover:bg-gray-700 p-2 rounded">
               Complain
             </button>
           </li>
@@ -121,7 +120,7 @@ function ProfilePage() {
           <div className="mb-4">
             <h3 className="text-lg md:text-xl font-semibold">Contact:</h3>
             <p className="text-base md:text-lg p-3 border border-gray-300 rounded-md">
-              {profile.phoneNo}
+              +91 {profile.phoneNo}
             </p>
           </div>
           <div className="flex flex-col md:flex-row justify-between space-y-4 md:space-y-0">

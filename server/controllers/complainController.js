@@ -2,11 +2,11 @@ import Complaint from "../models/complainModel.js";
 
 // Submit a new complaint
 const createComplaint = async (req, res) => {
-  const { department, description, availability, location } = req.body;
-
+  const {department, description, availability, location } = req.body;
+  console.log(req.body)
   try {
     const complaint = new Complaint({
-      user: req.user._id, // Link to the user submitting the complaint
+      user: req.body.user._id, // Link to the user submitting the complaint
       department,
       description,
       availability,
@@ -38,21 +38,38 @@ const getDepartmentComplaints = async (req, res) => {
 const updateComplaintStatus = async (req, res) => {
   try {
     const { complaintId } = req.params;
-    const { status } = req.body; 
+    const { status , statusByUser } = req.body; 
+    if(status){
+      const validStatuses = ["pending", "in-progress", "completed","closed"];
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({ message: "Invalid status" });
+      }
+
+      const complaint = await Complaint.findById(complaintId);
+      if (!complaint) {
+        return res.status(404).json({ message: "Complaint not found" });
+      }
+
+      complaint.status = status;
+      await complaint.save();
+
+      res.status(200).json({ message: "Complaint status updated", complaint });
+  }
+  else{
     const validStatuses = ["pending", "in-progress", "completed","closed"];
-    if (!validStatuses.includes(status)) {
-      return res.status(400).json({ message: "Invalid status" });
-    }
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({ message: "Invalid status" });
+      }
 
-    const complaint = await Complaint.findById(complaintId);
-    if (!complaint) {
-      return res.status(404).json({ message: "Complaint not found" });
-    }
+      const complaint = await Complaint.findById(complaintId);
+      if (!complaint) {
+        return res.status(404).json({ message: "Complaint not found" });
+      }
 
-    complaint.status = status;
-    await complaint.save();
-
-    res.status(200).json({ message: "Complaint status updated", complaint });
+      complaint.statusByUser = statusByUser;
+      await complaint.save();
+      res.status(200).json({ message: "Complaint status updated", complaint });
+  }
   } catch (error) {
     res.status(500).json({
       message: "Error updating complaint status",

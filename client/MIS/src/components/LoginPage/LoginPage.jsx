@@ -31,11 +31,10 @@ const LoginForm = () => {
       );
       localStorage.setItem("token", response.data.token);
       if (formData.role === "normal_user") {
-        // Assuming response.data contains user information
-        const userData = response.data.user; // Adjust this based on your API response
+        const userData = response.data.user;
         // console.log(response.data)
         localStorage.setItem("user", JSON.stringify(userData));
-        navigate("/profile"); // Navigate to the profile page
+        navigate("/profile");
       } else {
         localStorage.setItem("admin", JSON.stringify({ jd: formData.role }));
         navigate("/admin");
@@ -44,7 +43,7 @@ const LoginForm = () => {
     } catch (err) {
       console.error("Login error:", err);
       setError(err.response?.data?.message || "Login failed");
-      toast.error(err.response?.data?.message || "Login failed"); // Show error toast
+      toast.error(err.response?.data?.message || "Login failed"); 
     }
   };
 

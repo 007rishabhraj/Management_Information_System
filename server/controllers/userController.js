@@ -60,6 +60,7 @@ import sendToken from "../utils/sendToken.js";
       password: hashedPassword,
       role,
       roomNo,
+      phoneNo,
     });
     await newUser.save();
     res
