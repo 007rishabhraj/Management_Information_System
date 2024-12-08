@@ -85,6 +85,14 @@ function ProfilePage() {
               History
             </button>
           </li>
+          <li>
+            <button
+              onClick={() => navigate("/previous-reviews")}
+              className="text-left w-full hover:bg-gray-700 p-2 rounded"
+            >
+              Previous Reviews 
+            </button>
+          </li>
         </ul>
       </div>
 
