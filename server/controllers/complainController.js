@@ -81,7 +81,7 @@ const updateComplaintStatus = async (req, res) => {
 const getUserComplaints = async (req, res) => {
   try {
     const complaints = await Complaint.find({ user: req.user._id }).select(
-      "department location availability description status createdAt statusByUser"
+      "department location availability description status createdAt statusByUser feedback rating"
     );
 
     res.status(200).json({ complaints });

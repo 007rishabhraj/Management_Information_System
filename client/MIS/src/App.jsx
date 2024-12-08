@@ -19,6 +19,7 @@ import UpdateUser from "./components/UpdateUser/UpdateUser";
 import ReviewPage from "./components/Review/Review";
 import WorkDoneForm from "./components/Review/Checkbox";
 import CheckBox from "./components/Review/Checkbox";
+import UserReviews from "./components/UserReviews/UserReviews";
 axios.defaults.withCredentials = true;
 const RootLayout = () => (
   <>
@@ -45,7 +46,8 @@ const router = createBrowserRouter([
       { path: "JeInfo", element: < JeInfo/> },
       { path: "UpdateUser", element: < UpdateUser/> },
       {path: "review",element:<ReviewPage/>},
-      {path:"check",element:<CheckBox/>}
+      {path:"check",element:<CheckBox/>},
+      {path:"previous-reviews",element:<UserReviews/>}
     ],
   },
 ]);
