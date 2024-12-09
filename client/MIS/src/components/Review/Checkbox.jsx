@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -36,7 +36,7 @@ const CheckBox = ({complaintId}) => {
         className="bg-white shadow-md rounded-lg p-6 w-96"
       >
         <h2 className="text-lg font-semibold mb-4">
-          Have you completed your work?
+          Is the Task Completed ?
         </h2>
         <div className="flex items-center mb-4">
           <input
