@@ -5,6 +5,8 @@ import { app } from "./app.js";
 
 dotenv.config({ path: "./config.env" });
 
+//Const db connects to database using env file and creating it to be a environment variable //
+
 const DB = process.env.DATABASE.replace(
   "<PASSWORD>",
   process.env.DATABASE_PASSWORD
