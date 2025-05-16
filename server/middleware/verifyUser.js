@@ -38,7 +38,7 @@ const verifyUser = async (req, res, next) => {
   } catch (err) {
     return res.status(401).json({
       status: "Error",
-      message: "Invalid token or authentication failed",
+      message: "Invalid token  or authentication failed",
       error: err.message,
     });
   }
