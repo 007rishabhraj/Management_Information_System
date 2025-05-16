@@ -24,7 +24,9 @@ const server = app.listen(port, () => {
   console.log("Server running on ", port);
 });
 
-
+app.get("/", (req, res) => {
+  res.send("API is running...");
+});
 
 // handling unhandled rejections
 process.on("unhandledRejection", (err) => {
