@@ -7,7 +7,7 @@ import { userRouter } from "./routes/userRouter.js";
 
 
 const corsOption = {
-  origin: ["https://management-information-system-frontend.vercel.app/"],
+  origin: ["https://management-information-system-frontend.vercel.app"],
   credentials: true,
   methods: ["GET", "POST", "PATCH", "DELETE"],
 };
