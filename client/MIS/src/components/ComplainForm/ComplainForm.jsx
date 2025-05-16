@@ -140,7 +140,7 @@ const ComplaintForm = () => {
             className="block text-brown-700 mb-1"
             htmlFor="availabilityStart"
           >
-            Availability Start
+            Available Time
           </label>
           <input
             type="datetime-local"
@@ -158,7 +158,7 @@ const ComplaintForm = () => {
             className="block text-brown-700 mb-1"
             htmlFor="availabilityEnd"
           >
-            Availability End
+            End Time
           </label>
           <input
             type="datetime-local"
