@@ -2,6 +2,7 @@ import { useState , useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify"; 
+import { axiosInstance } from "../../App";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -32,8 +33,8 @@ const LoginForm = () => {
 
     try {
       // Handle Login
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/users/login",
+      const response = await axiosInstance.post(
+        "/api/v1/users/login",
         formData,
         { withCredentials: true }
       );

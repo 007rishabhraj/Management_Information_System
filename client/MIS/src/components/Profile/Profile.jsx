@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { axiosInstance } from "../../App";
 
 function ProfilePage() {
   const rawData = localStorage.getItem("user");
@@ -16,7 +17,7 @@ function ProfilePage() {
         if (user) {
           setProfile(user);
         } else {
-          const response = await axios.get("http://127.0.0.1:8000/api/v1/users/", {
+          const response = await axiosInstance.get("/api/v1/users/", {
             headers: {
               Authorization: `Bearer ${user?.token}`,
             },

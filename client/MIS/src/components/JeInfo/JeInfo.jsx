@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { axiosInstance } from "../../App";
 
 function role(r){
   if(r === "electric_jd") return "Electric JE"
@@ -13,8 +14,8 @@ const JeInfo = ()=>{
   useEffect(() => {
     const fetchJes = async () => {
         try {
-            const path = `http://localhost:8000/api/v1/users/jds`;
-            const response = await axios.get(path, {
+            // const path = `http://localhost:8000/api/v1/users/jds`;
+            const response = await axiosInstance.get('/api/v1/users/jds', {
             headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },

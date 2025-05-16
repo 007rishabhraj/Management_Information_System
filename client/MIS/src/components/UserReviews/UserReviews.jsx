@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import CheckBox from "../Review/Checkbox";
+import { axiosInstance } from "../../App";
 
 function formatDateTime(isoString) {
   const date = new Date(isoString);
@@ -35,8 +36,8 @@ const UserHistory = ()=>{
     if (user) {
       const fetchComplaints = async () => {
         try {
-          const path = `http://localhost:8000/api/v1/users/allcomplains`;
-          const response = await axios.get(path, {
+          const path = `/api/v1/users/allcomplains`;
+          const response = await axiosInstance.get(path, {
             headers : {
               Authorization : `Bearer ${localStorage.getItem("token")}`,
             },

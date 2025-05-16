@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { axiosInstance } from "../../App";
 
 function formatDateTime(isoString) {
   const date = new Date(isoString);
@@ -43,8 +44,8 @@ const AdminDashboard = () => {
           else if (admin.jd === "networking_jd") jd = "networking";
           else if (admin.jd === "plumbing_jd") jd = "plumbing";
           else if (admin.jd === "carpentry_jd") jd = "carpentry";
-          const path = `http://localhost:8000/api/v1/users/department/${jd}`;
-          const response = await axios.get(path, {
+          // const path = `http://localhost:8000/api/v1/users/department/${jd}`;
+          const response = await axiosInstance.get('/api/v1/users/department/${jd}', {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -63,8 +64,8 @@ const AdminDashboard = () => {
   const markAsCompleted = async (complaintId) => {
     try {
       // API call to mark complaint as completed
-      const path = `http://localhost:8000/api/v1/users/complaints/${complaintId}`;
-      await axios.patch(path, 
+      // const path = `http://localhost:8000`;
+      await axiosInstance.patch('/api/v1/users/complaints/${complaintId}', 
       {
         complaintId,
         status : "completed",

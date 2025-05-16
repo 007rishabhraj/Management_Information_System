@@ -2,6 +2,7 @@ import  { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { axiosInstance } from "../../App";
 
 
 const ReviewPage = () => {
@@ -22,8 +23,8 @@ const ReviewPage = () => {
       return;
     }
     try{
-      const path = `http://localhost:8000/api/v1/users/complain/${complaintId}/rating`;
-      await axios.patch(path, 
+      const path = `/api/v1/users/complain/${complaintId}/rating`;
+      await axiosInstance.patch(path, 
       {
         complaintId,
         rating,

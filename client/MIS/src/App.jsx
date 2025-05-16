@@ -28,6 +28,10 @@ const RootLayout = () => (
     <Footer />
   </>
 );
+export const axiosInstance = axios.create({
+  baseURL: "https://complain-system-uo1f.onrender.com/",
+});
+
 
 const router = createBrowserRouter([
   {

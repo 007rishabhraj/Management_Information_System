@@ -1,6 +1,8 @@
 import  { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "../../App";
+// import { axiosInstance } from "../../App";
 
 
 const CheckBox = ({complaintId}) => {
@@ -10,8 +12,8 @@ const CheckBox = ({complaintId}) => {
     e.preventDefault();
     console.log(response)
     try{
-      const path = `http://localhost:8000/api/v1/users/complaints/${complaintId}`;
-      await axios.patch(path, 
+      const path = `/api/v1/users/complaints/${complaintId}`;
+      await axiosInstance.patch(path, 
       {
         complaintId,
         statusByUser : (response==="Yes" ? "completed" : "notCompleted" ),

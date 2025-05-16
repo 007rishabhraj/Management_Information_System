@@ -7,7 +7,7 @@ import { userRouter } from "./routes/userRouter.js";
 
 
 const corsOption = {
-  origin: ["http://127.0.0.1:5173", "http://localhost:5173"],
+  origin: ["https://management-information-system-frontend.vercel.app/"],
   credentials: true,
   methods: ["GET", "POST", "PATCH", "DELETE"],
 };

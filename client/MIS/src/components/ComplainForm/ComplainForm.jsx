@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/Auth"; // Import the useAuth hook
+import { axiosInstance } from "../../App";
 
 const ComplaintForm = () => {
   const [formData, setFormData] = useState({
@@ -51,8 +52,8 @@ const ComplaintForm = () => {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/users/complain",
+      const response = await axiosInstance.post(
+        "/api/v1/users/complain",
         {
           user,
           department,

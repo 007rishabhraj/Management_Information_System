@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { axiosInstance } from "../../App";
 
 const UpdateUser = () => {
   const navigate = useNavigate();
@@ -26,8 +27,8 @@ const UpdateUser = () => {
     e.preventDefault();
     // console.log("Updated Details:", formData);
     try {
-        const response = await axios.post(
-          "http://127.0.0.1:8000/api/v1/users/updateUser",
+        const response = await axiosInstance.post(
+          "/api/v1/users/updateUser",
           {
             email : user.email,
             username : formData.username,
